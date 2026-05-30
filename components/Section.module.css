@@ -1,0 +1,133 @@
+.section {
+  padding: 100px 24px;
+}
+
+.inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.label {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 16px;
+}
+
+.h2 {
+  text-align: center;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.sub {
+  text-align: center;
+  color: var(--muted);
+  font-size: 17px;
+  max-width: 540px;
+  margin: 0 auto 60px;
+}
+
+/* Steps grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2px;
+  background: var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.card {
+  background: var(--surface);
+  padding: 36px 32px;
+}
+
+.stepNum {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(22,163,74,.15);
+  border: 1px solid rgba(22,163,74,.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand-glow);
+  margin-bottom: 20px;
+}
+
+.stepTitle {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  margin-bottom: 10px;
+}
+
+.stepBody {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.stepBody code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 6px;
+  color: var(--brand-glow);
+}
+
+/* Features grid */
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.feature {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  transition: border-color .2s;
+}
+.feature:hover { border-color: var(--muted2); }
+
+.featureIcon {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.featureTitle {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  margin-bottom: 8px;
+}
+
+.featureBody {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.featureBody code {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--brand-glow);
+}

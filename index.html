@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EditLayer — Edit your Next.js site, live</title>
+  <meta name="description" content="Add ?edit=true to your Next.js site. Log in. Edit your marketing copy directly on the page. Publish. Vercel redeploys automatically." />
+  <meta property="og:title" content="EditLayer — Edit your Next.js site, live" />
+  <meta property="og:description" content="One npm package. Your marketing team edits copy directly on the page. No CMS, no dashboard, no compromise." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2316a34a'/><text y='24' x='4' font-size='22' font-family='monospace'>E</text></svg>" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080808;
+      --surface:   #101010;
+      --surface2:  #161616;
+      --border:    #232323;
+      --brand:     #16a34a;
+      --brand-dim: #15803d;
+      --brand-glow:#4ade80;
+      --text:      #f2f2f2;
+      --muted:     #737373;
+      --muted2:    #525252;
+      --radius:    12px;
+      --mono: 'Geist Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+      --sans: 'Inter', 'Geist', system-ui, -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 60px;
+      background: rgba(8,8,8,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -.01em;
+    }
+
+    .nav-logo svg { flex-shrink: 0; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ghost {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color .15s;
+    }
+    .btn-ghost:hover { color: var(--text); }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--brand);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background .15s, transform .1s;
+    }
+    .btn-primary:hover { background: var(--brand-dim); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 120px 24px 100px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      background: rgba(22,163,74,.12);
+      border: 1px solid rgba(22,163,74,.25);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--brand-glow);
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand-glow);
+      box-shadow: 0 0 6px var(--brand-glow);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .4; }
+    }
+
+    h1 {
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--brand-glow);
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 580px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 24px;
+      background: var(--brand);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      transition: background .15s, transform .1s, box-shadow .15s;
+      box-shadow: 0 0 0 0 rgba(22,163,74,0);
+    }
+    .btn-hero:hover {
+      background: var(--brand-dim);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(22,163,74,.25);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 24px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: border-color .15s, transform .1s;
+    }
+    .btn-outline:hover {
+      border-color: var(--muted2);
+      transform: translateY(-2px);
+    }
+
+    .hero-install {
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .hero-install .cmd { color: var(--brand-glow); }
+    .copy-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted2);
+      display: flex;
+      align-items: center;
+      transition: color .15s;
+      padding: 2px;
+    }
+    .copy-btn:hover { color: var(--text); }
+    .copy-btn.copied { color: var(--brand-glow); }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 24px; }
+
+    .section-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 540px;
+      margin: 0 auto 60px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .step {
+      background: var(--surface);
+      padding: 36px 32px;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(22,163,74,.15);
+      border: 1px solid rgba(22,163,74,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand-glow);
+      margin-bottom: 20px;
+    }
+
+    .step h3 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .step code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2px 6px;
+      color: var(--brand-glow);
+    }
+
+    /* ── SETUP ── */
+    .setup-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .setup-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .setup-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .setup-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .setup-card-step {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--brand);
+    }
+
+    pre {
+      padding: 20px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-x: auto;
+      color: #d4d4d4;
+    }
+
+    .comment  { color: #6b7280; }
+    .keyword  { color: #a78bfa; }
+    .string   { color: #4ade80; }
+    .prop     { color: #60a5fa; }
+    .tag      { color: #fb923c; }
+
+    /* ── FEATURES ── */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 0;
+    }
+
+    .feature {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      transition: border-color .2s;
+    }
+    .feature:hover { border-color: var(--muted2); }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(22,163,74,.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+
+    .feature h3 {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center;
+      padding: 100px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(22,163,74,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-section h2 { margin-bottom: 12px; }
+
+    .cta-section .section-sub { margin-bottom: 36px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted2);
+      transition: color .15s;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── UTILS ── */
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      background: rgba(22,163,74,.12);
+      border: 1px solid rgba(22,163,74,.2);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--brand-glow);
+      letter-spacing: .03em;
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links .btn-ghost { display: none; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="32" rx="8" fill="#16a34a"/>
+      <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="24" cy="22" r="4" fill="#4ade80"/>
+      <path d="M22.5 22l1 1 2-2" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    EditLayer
+  </div>
+  <div class="nav-links">
+    <a class="btn-ghost" href="https://www.npmjs.com/package/@editlayer/next" target="_blank">npm</a>
+    <a class="btn-ghost" href="https://github.com/editlayer" target="_blank">GitHub</a>
+    <a class="btn-primary" href="#setup">
+      Get started
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-badge">Self-hosted · No database · No CMS</div>
+
+  <h1>Your Next.js site.<br>Edited <em>live</em> by your team.</h1>
+
+  <p class="hero-sub">
+    Add <code style="font-family:var(--mono);font-size:.9em;background:#161616;border:1px solid #232323;border-radius:5px;padding:2px 8px;color:#4ade80">?edit=true</code> to any URL.
+    Log in with a magic link. Edit your headlines, CTAs, and copy directly on the page.
+    Publish and Vercel redeploys automatically — no CMS, no dashboard, no compromise.
+  </p>
+
+  <div class="hero-actions">
+    <a class="btn-hero" href="#setup">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Set up in 5 minutes
+    </a>
+    <a class="btn-outline" href="https://www.npmjs.com/package/@editlayer/next" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0zm6.5 6.5h11v11H6.5z"/><path d="M11 11h3.5v3.5H11z" fill="var(--bg)"/></svg>
+      View on npm
+    </a>
+  </div>
+
+  <div class="hero-install">
+    <span class="cmd">npm install @editlayer/next</span>
+    <button class="copy-btn" onclick="copyInstall(this)" title="Copy">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="2"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="how">
+  <div class="section-inner">
+    <p class="section-label">How it works</p>
+    <h2>Simple by design</h2>
+    <p class="section-sub">No third-party CMS to configure. No schema to model. No pipeline to maintain. Your site is the editor.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Install the package</h3>
+        <p>Run <code>npm install @editlayer/next</code> and <code>npx editlayer init</code> inside your Next.js project. The CLI scaffolds the API routes and config file automatically.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Mark editable fields</h3>
+        <p>Wrap any headline, paragraph, or link with <code>&lt;EditableText&gt;</code>. Keep your existing markup — EditLayer wraps around it, never rewrites it.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Set env vars, deploy</h3>
+        <p>Add your secret, site URL, and Resend API key to Vercel. Add your owner emails. Push. That's the entire backend — no database, no server to run.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Edit live</h3>
+        <p>Visit <code>yoursite.com/?edit=true</code>. Enter your email. Click the magic link. Green outlines appear on every editable field. Click, type, save, publish.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <h3>Commit → redeploy</h3>
+        <p>Publishing commits <code>editlayer/content.json</code> directly to your GitHub repo via the API. Vercel detects the commit and redeploys automatically.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">06</div>
+        <h3>Invite your team</h3>
+        <p>Add editor emails in your env vars or use the in-site Access panel. Editors can save drafts; only owners can publish. Role-based, secure by default.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── SETUP ── -->
+<section id="setup">
+  <div class="section-inner">
+    <p class="section-label">Setup guide</p>
+    <h2>From zero to editable<br>in under 5 minutes</h2>
+    <p class="section-sub">Copy, paste, deploy. Every command and env var you need — nothing more.</p>
+
+    <div class="setup-grid">
+
+      <!-- Step 1 -->
+      <div class="setup-card">
+        <div class="setup-card-header">
+          <span class="setup-card-title">Install &amp; init</span>
+          <span class="setup-card-step">Step 1</span>
+        </div>
+        <pre><span class="comment"># Inside your Next.js project</span>
+npm install <span class="string">@editlayer/next</span>
+npx editlayer init
+
+<span class="comment"># Creates editlayer.config.ts, editlayer/content.json,
+# and scaffolds the API routes in app/api/editlayer/</span></pre>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="setup-card">
+        <div class="setup-card-header">
+          <span class="setup-card-title">Environment variables</span>
+          <span class="setup-card-step">Step 2</span>
+        </div>
+        <pre><span class="comment"># .env.local (and Vercel → Settings → Environment Variables)</span>
+
+<span class="comment"># Generate a secret: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"</span>
+<span class="prop">EDITLAYER_SECRET</span>=<span class="string">your-32-char-random-secret</span>
+<span class="prop">EDITLAYER_SITE_URL</span>=<span class="string">https://yoursite.com</span>
+
+<span class="comment"># Magic link emails (free at resend.com)</span>
+<span class="prop">EDITLAYER_RESEND_API_KEY</span>=<span class="string">re_xxxxxxxxxxxx</span>
+<span class="prop">EDITLAYER_EMAIL_FROM</span>=<span class="string">EditLayer &lt;edit@yoursite.com&gt;</span>
+
+<span class="comment"># Who can log in and edit</span>
+<span class="prop">EDITLAYER_OWNERS</span>=<span class="string">owner@yoursite.com</span>
+<span class="prop">EDITLAYER_EDITORS</span>=<span class="string">marketing@yoursite.com,content@yoursite.com</span>
+
+<span class="comment"># GitHub commit → Vercel auto-redeploy (from github.com/settings/tokens)</span>
+<span class="prop">EDITLAYER_GITHUB_TOKEN</span>=<span class="string">github_pat_xxxx</span>
+<span class="prop">EDITLAYER_GITHUB_REPO</span>=<span class="string">yourname/your-repo</span></pre>
+      </div>
+
+      <!-- Step 2b: Cursor prompt OR manual -->
+      <div class="setup-card" style="border-color:rgba(22,163,74,.3);background:rgba(22,163,74,.04)">
+        <div class="setup-card-header" style="border-color:rgba(22,163,74,.2)">
+          <span class="setup-card-title" style="display:flex;align-items:center;gap:8px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Option A — Paste this into Cursor AI and it wires everything automatically
+          </span>
+          <span class="setup-card-step" style="background:rgba(22,163,74,.15);padding:3px 10px;border-radius:6px">Recommended</span>
+        </div>
+        <div style="padding:0 20px 16px;margin-top:16px">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Open Cursor, start a new chat, and paste the prompt below. The agent will wrap your layout, find every hardcoded string, and convert them to <code style="font-family:var(--mono);font-size:11px;background:#161616;border:1px solid #232323;border-radius:4px;padding:1px 5px">&lt;EditableText&gt;</code> components across your entire project.</p>
+        </div>
+        <div style="background:var(--surface2);border-top:1px solid rgba(22,163,74,.15);border-bottom:1px solid rgba(22,163,74,.15);position:relative">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 20px 0;opacity:.6;font-size:11px;font-family:var(--mono);color:var(--muted)">CURSOR PROMPT</div>
+          <pre id="cursor-prompt" style="white-space:pre-wrap;word-break:break-word;font-size:12.5px;color:#d4d4d4;padding:12px 20px 16px">I have installed @editlayer/next (v0.3.1) in this Next.js App Router project. Your task is to complete the full integration following the exact pattern documented below. Do not deviate from these conventions.
+
+━━ PACKAGE OVERVIEW ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+@editlayer/next is a self-hosted visual editing layer. It reads content from
+editlayer/content.json at build time and writes back to it via GitHub API on publish.
+There is no database, no external dashboard, and no CMS. All configuration is via
+environment variables already added to .env.local and Vercel.
+
+━━ STEP 1: ENSURE API ROUTES EXIST ━━━━━━━━━━━━━━━━━━━━
+
+Check whether app/api/editlayer/ exists with these route files:
+  login/route.ts, verify/route.ts, session/route.ts,
+  logout/route.ts, publish/route.ts, drafts/route.ts
+
+If any are missing, run: npx editlayer init
+Each route file must export the corresponding handler from @editlayer/next/server:
+
+  // app/api/editlayer/login/route.ts
+  export { handleEditLayerLogin as POST } from "@editlayer/next/server"
+
+  // app/api/editlayer/verify/route.ts
+  export { handleEditLayerVerify as GET } from "@editlayer/next/server"
+
+  // app/api/editlayer/session/route.ts
+  export { handleEditLayerSession as GET } from "@editlayer/next/server"
+
+  // app/api/editlayer/logout/route.ts
+  export { handleEditLayerLogout as POST } from "@editlayer/next/server"
+
+  // app/api/editlayer/publish/route.ts
+  export { handleEditLayerPublish as POST } from "@editlayer/next/server"
+
+  // app/api/editlayer/drafts/route.ts
+  export { handleEditLayerDrafts as GET, handleEditLayerDrafts as POST } from "@editlayer/next/server"
+
+━━ STEP 2: WRAP ROOT LAYOUT ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Open app/layout.tsx. Add the provider wrapper:
+
+  import { EditLayerProvider } from "@editlayer/next"
+  import { loadEditLayerContent } from "@editlayer/next/server"
+
+  export default async function RootLayout({ children }: { children: React.ReactNode }) {
+    const content = await loadEditLayerContent()
+    return (
+      &lt;html lang="en"&gt;
+        &lt;body&gt;
+          &lt;EditLayerProvider content={content}&gt;
+            {children}
+          &lt;/EditLayerProvider&gt;
+        &lt;/body&gt;
+      &lt;/html&gt;
+    )
+  }
+
+Do not remove any existing providers or imports — wrap them inside EditLayerProvider.
+
+━━ STEP 3: MARK EDITABLE CONTENT ━━━━━━━━━━━━━━━━━━━━━━
+
+Scan every .tsx and .jsx file in app/ and components/ for hardcoded marketing copy:
+  - h1, h2, h3, h4 headings
+  - p paragraph text (marketing, not UI labels)
+  - Button/link labels, nav item labels, CTA text
+  - Section titles, feature names, testimonial quotes
+  - Footer text
+
+Convert each to EditableText using this exact pattern:
+
+  BEFORE: &lt;h1 className="..."&gt;Your headline here&lt;/h1&gt;
+  AFTER:  &lt;EditableText id="home.hero.title" as="h1" className="..."&gt;Your headline here&lt;/EditableText&gt;
+
+  BEFORE: &lt;p className="..."&gt;Subheading copy&lt;/p&gt;
+  AFTER:  &lt;EditableText id="home.hero.subtitle" as="p" className="..."&gt;Subheading copy&lt;/EditableText&gt;
+
+ID naming convention: "[page].[section].[field]"
+  Examples: home.hero.title, home.hero.cta, pricing.header.subtitle,
+            about.team.description, nav.cta.label, footer.tagline
+
+Import at top of each file:
+  import { EditableText, EditableLink } from "@editlayer/next"
+
+For anchor tags and buttons with href:
+  BEFORE: &lt;a href="/contact" className="..."&gt;Book a call&lt;/a&gt;
+  AFTER:  &lt;EditableLink id="home.hero.cta" href="/contact" className="..."&gt;Book a call&lt;/EditableLink&gt;
+
+IMPORTANT RULES:
+  - Keep all existing className, style, and other props untouched
+  - Only replace the text node, not the element structure
+  - Do not wrap complex children (icons + text) — only wrap pure text strings
+  - Do not touch code comments, console.log strings, or non-visible strings
+
+━━ STEP 4: UPDATE content.json ━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create or update editlayer/content.json with the default value for every field you marked:
+
+  {
+    "version": 1,
+    "fields": {
+      "home.hero.title": "Your original headline text",
+      "home.hero.subtitle": "Your original subheading text",
+      ...all other fields you converted...
+    },
+    "meta": {
+      "updatedAt": "[current ISO timestamp]",
+      "updatedBy": "init",
+      "commitSha": null
+    }
+  }
+
+━━ DONE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After completing all steps, tell me:
+  1. How many fields were marked editable across how many files
+  2. Any files you skipped and why
+  3. Confirm the API routes are in place</pre>
+          <button class="copy-btn" onclick="copyPrompt(this)" title="Copy prompt" style="position:absolute;top:12px;right:16px;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.25);border-radius:6px;padding:6px 10px;display:flex;align-items:center;gap:5px;font-size:11px;color:#4ade80;font-family:var(--sans)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="2"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;padding:4px 0">
+        <div style="height:1px;flex:1;background:var(--border)"></div>
+        <span style="font-size:12px;color:var(--muted2);font-weight:600;letter-spacing:.08em;white-space:nowrap">OR DO IT MANUALLY — STEPS 3 &amp; 4 BELOW</span>
+        <div style="height:1px;flex:1;background:var(--border)"></div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="setup-card">
+        <div class="setup-card-header">
+          <span class="setup-card-title">Wrap your root layout</span>
+          <span class="setup-card-step">Step 3</span>
+        </div>
+        <pre><span class="comment">// app/layout.tsx</span>
+<span class="keyword">import</span> { EditLayerProvider } <span class="keyword">from</span> <span class="string">"@editlayer/next"</span>
+<span class="keyword">import</span> { loadEditLayerContent } <span class="keyword">from</span> <span class="string">"@editlayer/next/server"</span>
+
+<span class="keyword">export default async function</span> <span class="prop">RootLayout</span>({ children }) {
+  <span class="keyword">const</span> content = <span class="keyword">await</span> <span class="prop">loadEditLayerContent</span>()
+  <span class="keyword">return</span> (
+    <span class="tag">&lt;html&gt;&lt;body&gt;</span>
+      <span class="tag">&lt;EditLayerProvider</span> <span class="prop">content</span>={content}<span class="tag">&gt;</span>
+        {children}
+      <span class="tag">&lt;/EditLayerProvider&gt;</span>
+    <span class="tag">&lt;/body&gt;&lt;/html&gt;</span>
+  )
+}</pre>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="setup-card">
+        <div class="setup-card-header">
+          <span class="setup-card-title">Mark your content editable</span>
+          <span class="setup-card-step">Step 4</span>
+        </div>
+        <pre><span class="comment">// Any component — wrap static copy, keep everything else</span>
+<span class="keyword">import</span> { EditableText, EditableLink, EditableImage } <span class="keyword">from</span> <span class="string">"@editlayer/next"</span>
+
+<span class="keyword">export function</span> <span class="prop">Hero</span>() {
+  <span class="keyword">return</span> (
+    <span class="tag">&lt;section&gt;</span>
+      <span class="tag">&lt;EditableText</span> <span class="prop">id</span>=<span class="string">"home.hero.title"</span> <span class="prop">as</span>=<span class="string">"h1"</span><span class="tag">&gt;</span>
+        Your original headline
+      <span class="tag">&lt;/EditableText&gt;</span>
+
+      <span class="tag">&lt;EditableText</span> <span class="prop">id</span>=<span class="string">"home.hero.sub"</span> <span class="prop">as</span>=<span class="string">"p"</span><span class="tag">&gt;</span>
+        Your original subheadline
+      <span class="tag">&lt;/EditableText&gt;</span>
+
+      <span class="tag">&lt;EditableLink</span> <span class="prop">id</span>=<span class="string">"home.hero.cta"</span> <span class="prop">href</span>=<span class="string">"/contact"</span><span class="tag">&gt;</span>
+        Book a call
+      <span class="tag">&lt;/EditableLink&gt;</span>
+    <span class="tag">&lt;/section&gt;</span>
+  )
+}</pre>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="setup-card">
+        <div class="setup-card-header">
+          <span class="setup-card-title">Deploy, then edit</span>
+          <span class="setup-card-step">Step 5</span>
+        </div>
+        <pre><span class="comment"># Push to GitHub — Vercel deploys automatically</span>
+git add .
+git commit -m <span class="string">"Add EditLayer"</span>
+git push
+
+<span class="comment"># Then visit your live site with ?edit=true</span>
+<span class="comment"># → Enter your owner email</span>
+<span class="comment"># → Click the magic link in your inbox</span>
+<span class="comment"># → Green outlines appear on every editable field</span>
+<span class="comment"># → Click any field, edit, Save Draft or Publish</span>
+<span class="comment"># → Publish commits to GitHub → Vercel redeploys automatically</span></pre>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── FEATURES ── -->
+<section>
+  <div class="section-inner">
+    <p class="section-label">What you get</p>
+    <h2>Everything you need.<br>Nothing you don't.</h2>
+    <p class="section-sub">Built for developers who want to hand control to their clients — without handing over their codebase.</p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🔐</div>
+        <h3>Magic link auth</h3>
+        <p>Email-only login with short-lived signed tokens. No passwords, no OAuth config. HTTP-only cookies for sessions.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✏️</div>
+        <h3>In-page editing</h3>
+        <p>Green outlines on hover. Click to open an inline editor. Live preview of changes before publishing.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🚀</div>
+        <h3>GitHub → Vercel</h3>
+        <p>Publishing commits <code style="font-family:var(--mono);font-size:11px;background:#161616;border:1px solid #232323;border-radius:4px;padding:1px 5px">content.json</code> to your repo. Vercel detects the push and redeploys. Zero extra infra.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">👥</div>
+        <h3>Roles &amp; access</h3>
+        <p>Owners publish. Editors save drafts. Add team members via env vars. No database required.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🛡️</div>
+        <h3>Secure by default</h3>
+        <p>Origin validation, rate limiting, field ID allowlists, content sanitization. Plain text only — no arbitrary HTML.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📦</div>
+        <h3>Zero dependencies</h3>
+        <p>No CMS subscription. No hosted service. No vendor lock-in. Just an npm package and your existing Vercel project.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── CTA ── -->
+<div class="cta-section">
+  <div class="cta-glow"></div>
+  <p class="section-label">Get started now</p>
+  <h2>One command away<br>from a live editor</h2>
+  <p class="section-sub" style="margin-bottom:36px">
+    Your marketing team won't need to open Cursor again just to change a headline.
+  </p>
+
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
+    <a class="btn-hero" href="#setup">
+      Read the setup guide →
+    </a>
+    <a class="btn-outline" href="https://www.npmjs.com/package/@editlayer/next" target="_blank">
+      npm install @editlayer/next
+    </a>
+  </div>
+
+  <div style="margin-top:48px;display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;">
+    <span class="pill">v0.3.1</span>
+    <span style="font-size:13px;color:var(--muted2)">TypeScript · Next.js App Router · MIT</span>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">
+    <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#16a34a"/><path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+    EditLayer
+  </div>
+  <div class="footer-links">
+    <a href="https://www.npmjs.com/package/@editlayer/next" target="_blank">npm</a>
+    <a href="https://github.com/editlayer" target="_blank">GitHub</a>
+    <a href="#setup">Docs</a>
+    <a href="mailto:hello@editlayer.com">Contact</a>
+  </div>
+  <p style="font-size:12px;color:var(--muted2)">MIT License · Built for developers</p>
+</footer>
+
+<script>
+  function copyPrompt(btn) {
+    const text = document.getElementById('cursor-prompt').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!';
+      setTimeout(() => {
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="2"/></svg> Copy';
+      }, 2500);
+    });
+  }
+
+  function copyInstall(btn) {
+    navigator.clipboard.writeText('npm install @editlayer/next').then(() => {
+      btn.classList.add('copied');
+      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="2"/></svg>';
+      }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>

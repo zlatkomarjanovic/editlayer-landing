@@ -1,0 +1,214 @@
+.section {
+  padding: 100px 24px;
+}
+
+.inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.label {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 16px;
+}
+
+.h2 {
+  text-align: center;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.sub {
+  text-align: center;
+  color: var(--muted);
+  font-size: 17px;
+  max-width: 540px;
+  margin: 0 auto 60px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Regular step card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cardTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.cardStep {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.pre {
+  padding: 20px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.75;
+  overflow-x: auto;
+  color: #d4d4d4;
+  white-space: pre;
+}
+
+/* Syntax highlight classes used via dangerouslySetInnerHTML */
+.pre :global(.c) { color: #6b7280; }
+.pre :global(.k) { color: #a78bfa; }
+.pre :global(.s) { color: #4ade80; }
+.pre :global(.p) { color: #60a5fa; }
+.pre :global(.t) { color: #fb923c; }
+
+/* Cursor prompt card */
+.cursorCard {
+  background: rgba(22,163,74,.04);
+  border: 1px solid rgba(22,163,74,.3);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.cursorHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(22,163,74,.2);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cursorTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.recommended {
+  flex-shrink: 0;
+  background: rgba(22,163,74,.15);
+  border: 1px solid rgba(22,163,74,.25);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--brand-glow);
+}
+
+.cursorDesc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  padding: 16px 20px 0;
+}
+
+.ic {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--brand-glow);
+}
+
+.promptWrap {
+  background: var(--surface2);
+  border-top: 1px solid rgba(22,163,74,.15);
+  border-bottom: 1px solid rgba(22,163,74,.15);
+  margin-top: 16px;
+  position: relative;
+}
+
+.promptLabel {
+  padding: 10px 20px 0;
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--muted2);
+  opacity: .7;
+}
+
+.prompt {
+  padding: 12px 20px 16px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #d4d4d4;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.copyPromptBtn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: rgba(22,163,74,.15);
+  border: 1px solid rgba(22,163,74,.25);
+  border-radius: 6px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #4ade80;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: background .15s;
+}
+.copyPromptBtn:hover { background: rgba(22,163,74,.25); }
+
+/* OR divider */
+.orDivider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.orLine {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.orDivider span {
+  font-size: 11px;
+  color: var(--muted2);
+  font-weight: 600;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}

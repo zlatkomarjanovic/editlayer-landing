@@ -1,0 +1,127 @@
+.hero {
+  text-align: center;
+  padding: 120px 24px 100px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 14px;
+  background: rgba(22,163,74,.12);
+  border: 1px solid rgba(22,163,74,.25);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--brand-glow);
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-glow);
+  box-shadow: 0 0 6px var(--brand-glow);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.h1 {
+  font-size: clamp(40px, 7vw, 72px);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1.05;
+  margin-bottom: 24px;
+  color: var(--text);
+}
+
+.em {
+  font-style: normal;
+  color: var(--brand-glow);
+}
+
+.sub {
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 580px;
+  margin: 0 auto 40px;
+}
+
+.code {
+  font-family: var(--mono);
+  font-size: .85em;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  color: var(--brand-glow);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btnHero {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 24px;
+  background: var(--brand);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: background .15s, transform .1s, box-shadow .15s;
+}
+.btnHero:hover {
+  background: var(--brand-dim);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(22,163,74,.25);
+}
+
+.btnOutline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 24px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: border-color .15s, transform .1s;
+}
+.btnOutline:hover {
+  border-color: var(--muted2);
+  transform: translateY(-2px);
+}
+
+.install {
+  margin-top: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.install:hover { border-color: var(--muted2); }
+
+.cmd { color: var(--brand-glow); }
