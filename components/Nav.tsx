@@ -1,23 +1,76 @@
+"use client";
+import { useState, useEffect, useRef } from "react";
 import styles from "./Nav.module.css";
 
 export default function Nav() {
+  const [banner, setBanner] = useState(true);
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
+
+  useEffect(() => {
+    function onScroll() {
+      const y = window.scrollY;
+      setHidden(y > lastY.current && y > 120);
+      lastY.current = y;
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  function handleSeeDemo(e: React.MouseEvent<HTMLAnchorElement>) {
+    e.preventDefault();
+    const outer = document.getElementById("hero-scroll");
+    if (!outer) return;
+    // Scroll deep enough into the pinned hero track to fully reveal the demo.
+    const target = outer.offsetTop + window.innerHeight * 1.1;
+    const lenis = (window as unknown as { lenis?: { scrollTo: (t: number) => void } }).lenis;
+    if (lenis) lenis.scrollTo(target);
+    else window.scrollTo({ top: target, behavior: "smooth" });
+  }
+
   return (
-    <nav className={styles.nav}>
-      <div className={styles.logo}>
-        <LogoIcon />
-        EditLayer
-      </div>
-      <div className={styles.links}>
-        <a className={styles.ghost} href="https://www.npmjs.com/package/@editlayer/next" target="_blank" rel="noreferrer">npm</a>
-        <a className={styles.ghost} href="https://github.com/editlayer" target="_blank" rel="noreferrer">GitHub</a>
-        <a className={styles.primary} href="#setup">
-          Get started
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+    <header className={`${styles.header} ${hidden ? styles.headerHidden : ""}`}>
+      {banner && (
+        <div className={styles.banner}>
+          <span className={styles.bannerDot} />
+          <span className={styles.bannerText}>
+            EditLayer v0.3.1 — magic-link auth, editor roles &amp; GitHub autodeploy
+          </span>
+          <a
+            className={styles.bannerLink}
+            href="https://www.npmjs.com/package/@editlayer/next"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View on npm →
+          </a>
+          <button className={styles.bannerClose} onClick={() => setBanner(false)} aria-label="Dismiss">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+            </svg>
+          </button>
+        </div>
+      )}
+      <nav className={styles.nav}>
+        <a className={styles.logo} href="/">
+          <LogoIcon />
+          EditLayer
         </a>
-      </div>
-    </nav>
+        <div className={styles.links}>
+          <a className={styles.ghost} href="#how-it-works">How it works</a>
+          <a className={styles.ghost} href="#setup">Docs</a>
+          <a className={styles.ghost} href="https://www.npmjs.com/package/@editlayer/next" target="_blank" rel="noreferrer">
+            npm
+          </a>
+          <a className={styles.primary} href="#demo" onClick={handleSeeDemo}>
+            See demo
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </nav>
+    </header>
   );
 }
 

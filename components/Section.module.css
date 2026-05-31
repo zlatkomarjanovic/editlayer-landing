@@ -1,9 +1,9 @@
 .section {
-  padding: 100px 24px;
+  padding: 96px 24px;
 }
 
 .inner {
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
@@ -14,14 +14,14 @@
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--brand);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .h2 {
   text-align: center;
-  font-size: clamp(28px, 4vw, 42px);
+  font-size: clamp(26px, 3.8vw, 40px);
   font-weight: 800;
-  letter-spacing: -.025em;
+  letter-spacing: -.028em;
   line-height: 1.1;
   margin-bottom: 16px;
 }
@@ -29,51 +29,56 @@
 .sub {
   text-align: center;
   color: var(--muted);
-  font-size: 17px;
-  max-width: 540px;
-  margin: 0 auto 60px;
+  font-size: 16.5px;
+  max-width: 520px;
+  margin: 0 auto 56px;
+  line-height: 1.65;
 }
 
 /* Steps grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px;
   background: var(--border);
-  border-radius: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
 .card {
   background: var(--surface);
-  padding: 36px 32px;
+  padding: 32px 28px;
+  transition: background .2s;
 }
+.card:hover { background: var(--surface2); }
 
 .stepNum {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: rgba(22,163,74,.15);
-  border: 1px solid rgba(22,163,74,.25);
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: rgba(22,163,74,.12);
+  border: 1px solid rgba(22,163,74,.2);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--mono);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--brand-glow);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .stepTitle {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
-  letter-spacing: -.01em;
-  margin-bottom: 10px;
+  letter-spacing: -.015em;
+  margin-bottom: 9px;
+  color: var(--text);
 }
 
 .stepBody {
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--muted);
   line-height: 1.65;
 }
@@ -81,9 +86,9 @@
 .stepBody code {
   font-family: var(--mono);
   font-size: 12px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 5px;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
   padding: 2px 6px;
   color: var(--brand-glow);
 }
@@ -91,43 +96,69 @@
 /* Features grid */
 .featuresGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;       /* every box gets the same (tallest) height */
+  gap: 12px;
+  align-items: stretch;
 }
+.featuresGrid > * { display: flex; }  /* AnimateIn wrapper fills the cell */
 
 .feature {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   padding: 28px 24px;
-  transition: border-color .2s;
+  transition: border-color .2s, background .2s, transform .15s;
 }
-.feature:hover { border-color: var(--muted2); }
+.feature:hover {
+  border-color: var(--border2);
+  background: var(--surface2);
+  transform: translateY(-2px);
+}
 
 .featureIcon {
-  font-size: 24px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(22,163,74,.1);
+  border: 1px solid rgba(22,163,74,.15);
+  border-radius: 9px;
+  color: var(--brand-glow);
   margin-bottom: 16px;
 }
 
 .featureTitle {
   font-size: 15px;
   font-weight: 700;
-  letter-spacing: -.01em;
+  letter-spacing: -.015em;
   margin-bottom: 8px;
+  color: var(--text);
 }
 
 .featureBody {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--muted);
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .featureBody code {
   font-family: var(--mono);
-  font-size: 11px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
+  font-size: 11.5px;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
   border-radius: 4px;
   padding: 1px 5px;
   color: var(--brand-glow);
+}
+
+@media (max-width: 860px) {
+  .featuresGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .featuresGrid { grid-template-columns: 1fr; }
 }

@@ -1,127 +1,448 @@
-.hero {
+/* Keyframes must be defined in-module — Turbopack scopes animation names, so
+   referencing the global @keyframes (in globals.css) wouldn't match here. */
+@keyframes pulse    { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+@keyframes blink    { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes fadeUp   { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes clickPop {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  40%  { transform: translate(-50%, -50%) scale(0.7); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ── Hero section ────────────────────────────────────────────────────────── */
+/* Scroll track — ~100vh of scrubbing while the stage stays pinned, so the
+   dashboard reaches full view within a short scroll. */
+.heroScroll {
+  position: relative;
+  height: 200vh;
+}
+
+/* Sticky stage — CSS pin (no GSAP pin-spacer → no React removeChild crash). */
+.stickyStage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 216px; /* ~120px of breathing room below the nav, above badge */
+}
+
+.glowBg {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -5%, rgba(22,163,74,.13) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 48%, rgba(22,163,74,.04) 0%, transparent 70%);
+}
+
+.dotGrid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 100%);
+}
+
+/* ── Hero text ───────────────────────────────────────────────────────────── */
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  padding: 120px 24px 100px;
-  max-width: 860px;
-  margin: 0 auto;
+  max-width: 720px;
+  width: 100%;
+  /* GSAP owns ALL transforms + opacity here — do NOT set a CSS animation on
+     this element or it will override GSAP's inline styles (including scale/y). */
+  will-change: opacity, filter, transform;
 }
 
 .badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 5px 14px;
-  background: rgba(22,163,74,.12);
-  border: 1px solid rgba(22,163,74,.25);
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--brand-glow);
-  letter-spacing: .03em;
-  text-transform: uppercase;
-  margin-bottom: 32px;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 14px; background: rgba(22,163,74,.09);
+  border: 1px solid rgba(22,163,74,.18); border-radius: 100px;
+  font-size: 11px; font-weight: 700; color: var(--brand-glow);
+  letter-spacing: .05em; text-transform: uppercase; margin-bottom: 22px;
 }
 
-.dot {
-  display: block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--brand-glow);
+.badgeDot {
+  display: block; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--brand-glow);
   box-shadow: 0 0 6px var(--brand-glow);
   animation: pulse 2s ease-in-out infinite;
 }
 
 .h1 {
-  font-size: clamp(40px, 7vw, 72px);
-  font-weight: 800;
-  letter-spacing: -.03em;
-  line-height: 1.05;
-  margin-bottom: 24px;
-  color: var(--text);
+  font-size: clamp(34px, 5.5vw, 60px);
+  font-weight: 800; letter-spacing: -.035em; line-height: 1.06;
+  margin-bottom: 18px;
 }
 
-.em {
-  font-style: normal;
-  color: var(--brand-glow);
-}
+.em { font-style: normal; color: var(--brand-glow); }
 
 .sub {
-  font-size: clamp(16px, 2.5vw, 20px);
-  color: var(--muted);
-  line-height: 1.6;
-  max-width: 580px;
-  margin: 0 auto 40px;
+  font-size: clamp(15px, 1.8vw, 17.5px);
+  color: var(--muted); line-height: 1.7;
+  max-width: 530px; margin: 0 auto 26px;
 }
 
-.code {
-  font-family: var(--mono);
-  font-size: .85em;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 2px 8px;
-  color: var(--brand-glow);
+.ic {
+  font-family: var(--mono); font-size: .85em;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 5px; padding: 2px 7px; color: var(--brand-glow);
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
+/* Inline CTA row */
+.ctaRow {
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap; justify-content: center;
+  margin-bottom: 16px;
 }
 
-.btnHero {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 13px 24px;
-  background: var(--brand);
-  color: #fff;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 700;
-  transition: background .15s, transform .1s, box-shadow .15s;
+.btnPrimary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 20px; background: var(--brand); color: #fff;
+  border-radius: 9px; font-size: 13.5px; font-weight: 700;
+  transition: background .15s, transform .12s, box-shadow .15s; white-space: nowrap;
 }
-.btnHero:hover {
-  background: var(--brand-dim);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(22,163,74,.25);
-}
-
-.btnOutline {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 13px 24px;
-  border: 1px solid var(--border);
-  background: var(--surface2);
-  color: var(--text);
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 600;
-  transition: border-color .15s, transform .1s;
-}
-.btnOutline:hover {
-  border-color: var(--muted2);
-  transform: translateY(-2px);
-}
+.btnPrimary:hover { background: var(--brand-dim); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(22,163,74,.28); }
 
 .install {
-  margin-top: 24px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 20px;
-  font-family: var(--mono);
-  font-size: 14px;
-  color: var(--muted);
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 9px; padding: 10px 14px;
+  font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+  cursor: pointer; transition: border-color .15s, background .15s; white-space: nowrap;
+}
+.install:hover { border-color: var(--muted2); background: var(--surface2); }
+.dollar { color: var(--muted2); user-select: none; }
+.cmd    { color: var(--brand-glow); }
+.copyBtn {
+  display: inline-flex; align-items: center;
+  color: var(--muted2); border-left: 1px solid var(--border2); padding-left: 8px; margin-left: 2px;
+}
+.install:hover .copyBtn { color: var(--muted); }
+
+.scrollHint {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px; color: var(--muted2);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+/* ── Demo wrapper ────────────────────────────────────────────────────────── */
+/* Anchored to the TOP of the stage; GSAP translates demoInner down to its
+   measured resting Y so the whole demo lands fully in view. Centering lives
+   on the wrapper (CSS only) so GSAP's y transform never fights translateX. */
+.demoWrap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%); /* centering only — GSAP owns demoInner */
+  width: 1440px;
+  z-index: 5; /* sits above the blurred-out text */
+}
+
+.demoInner {
+  /* GSAP controls translateY + scale (transform-origin: top center) */
+  width: 1440px;
+  will-change: transform;
+}
+
+/* ── Demo browser shell ──────────────────────────────────────────────────── */
+.demo {
+  position: relative;
+  width: 1440px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;  /* chrome + toolbar fixed, site fills the rest */
+  background: #141414;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.03), 0 24px 70px rgba(0,0,0,.55), 0 0 90px rgba(22,163,74,.07);
+}
+.demoHov .ef { cursor: pointer; }
+
+/* Simulated cursor */
+.cur {
+  position: absolute; width: 14px; height: 14px; border-radius: 50%;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 0 0 2px rgba(0,0,0,.25), 0 2px 12px rgba(0,0,0,.5);
+  pointer-events: none; z-index: 200;
+  transform: translate(-50%,-50%);
+  transition: left .65s cubic-bezier(.4,0,.2,1), top .65s cubic-bezier(.4,0,.2,1);
+}
+.curClick { animation: clickPop .2s ease forwards; }
+
+/* Browser chrome — compact for 600px height */
+.chrome {
+  display: flex; align-items: center; gap: 12px; padding: 10px 18px; flex-shrink: 0;
+  background: #0f0f0f; border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.dots { display: flex; gap: 6px; flex-shrink: 0; }
+.d1 { display:block; width:12px; height:12px; border-radius:50%; background:#ff5f57; }
+.d2 { display:block; width:12px; height:12px; border-radius:50%; background:#febc2e; }
+.d3 { display:block; width:12px; height:12px; border-radius:50%; background:#28c840; }
+.urlBar {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: #1a1a1a; border: 1px solid rgba(255,255,255,.07); border-radius: 7px;
+  padding: 6px 16px; font-size: 14px; font-family: var(--mono);
+  color: rgba(255,255,255,.35); max-width: 480px; margin: 0 auto;
+}
+.lock { color: rgba(255,255,255,.25); flex-shrink: 0; }
+.urlParam { color: var(--brand-glow); }
+.chromeR { width: 100px; flex-shrink: 0; }
+
+/* ── Toolbar ─────────────────────────────────────────────────────────────── */
+.toolbar {
+  display: flex; align-items: center; padding: 0 18px; height: 48px;
+  background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,.08);
+  gap: 10px; flex-shrink: 0;
+}
+.tbL    { display: flex; align-items: center; gap: 10px; }
+.tbR    { display: flex; align-items: center; gap: 7px; }
+.tbSpacer { flex: 1; }
+.brand  { font-size: 15px; font-weight: 800; color: var(--text); letter-spacing: -.01em; }
+.roleBadge {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  background: rgba(22,163,74,.15); border: 1px solid rgba(22,163,74,.25);
+  color: var(--brand-glow); padding: 3px 8px; border-radius: 5px;
+}
+.tbMeta { font-size: 12px; color: var(--muted2); }
+
+.tbSave {
+  padding: 5px 13px; background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 6px;
+  font-size: 12px; font-weight: 600; color: rgba(255,255,255,.5);
+  cursor: pointer; font-family: var(--sans);
+  transition: background .2s, color .2s, border-color .2s;
+}
+.tbSave:hover { background: rgba(255,255,255,.1); color: var(--text); }
+.tbSaveOn { background: rgba(22,163,74,.15) !important; border-color: rgba(22,163,74,.3) !important; color: var(--brand-glow) !important; }
+
+.tbPublish {
+  padding: 5px 13px; background: var(--brand); border: none; border-radius: 6px;
+  font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;
+  font-family: var(--sans); transition: background .2s;
+}
+.tbPublish:hover { background: var(--brand-dim); }
+.tbPublishBusy { background: var(--brand-dim); opacity: .7; }
+.tbPublishDone { background: #166534; }
+
+.tbGhost {
+  padding: 5px 11px; background: transparent;
+  border: 1px solid rgba(255,255,255,.08); border-radius: 6px;
+  font-size: 12px; font-weight: 500; color: var(--muted2);
+  cursor: pointer; font-family: var(--sans); transition: color .15s, border-color .15s;
+}
+.tbGhost:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
+
+/* ── Mini website ─────────────────────────────────────────────────────────── */
+.site { background: #f9fafb; display: flex; flex-direction: column; flex: 1; min-height: 0; }
+
+.siteNav {
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  padding: 13px 36px; background: #fff; border-bottom: 1px solid #e5e7eb; gap: 16px;
+}
+.siteNavBrand { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: #111; }
+.siteNavBrand svg { width: 20px; height: 20px; }
+.siteNavLinks { display: flex; gap: 28px; font-size: 14px; color: #6b7280; }
+.siteNavLinks span { cursor: default; }
+.siteNavCta { background: #6366f1; color: #fff; font-size: 13px; font-weight: 700; padding: 8px 18px; border-radius: 8px; cursor: default; }
+
+.siteBody {
+  flex: 1; min-height: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+  padding: 28px 36px; align-items: stretch;
+}
+.siteLeft  { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+.siteRight { display: flex; align-items: stretch; min-height: 0; }
+.siteCtaRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 0; }
+.siteFeatures { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+
+/* Feature strip */
+.siteStrip {
+  display: flex; align-items: center; flex-shrink: 0;
+  background: #fff; border-top: 1px solid #e5e7eb; padding: 20px 56px; gap: 0;
+}
+.stripItem {
+  font-size: 16px; font-weight: 600; color: #6b7280;
+  padding: 0 28px; border-right: 1px solid #e5e7eb;
+}
+.stripItem:first-child { padding-left: 0; }
+.stripItem:last-child  { border-right: none; }
+
+/* ── Editable fields ─────────────────────────────────────────────────────── */
+.ef {
+  position: relative;
+  display: inline-flex; align-items: center;
+  padding: 8px 12px;
+  border: 2px dashed rgba(22,163,74,.25); border-radius: 8px;
+  color: #111; background: transparent; font-size: 15px; line-height: 1.45;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+}
+.efHover {
+  border-color: rgba(22,163,74,.55);
+  background: rgba(22,163,74,.04);
   cursor: pointer;
+}
+.efActive {
+  border-color: rgba(22,163,74,.8) !important;
+  background: rgba(22,163,74,.06) !important;
+  box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+}
+/* Eyebrow / kicker pill */
+.efEyebrow {
+  align-self: flex-start;
+  font-size: 12px; font-weight: 700; letter-spacing: .01em;
+  color: #4f46e5; background: #eef2ff;
+  border: 1.5px dashed rgba(99,102,241,.3);
+  border-radius: 100px; padding: 5px 12px;
+}
+
+.efLarge { font-size: 32px; font-weight: 800; letter-spacing: -.025em; line-height: 1.1; color: #0f0f0f; }
+
+.efSub {
+  font-size: 14px; line-height: 1.55; color: #4b5563; font-weight: 450;
+  max-width: 440px;
+}
+
+.efCta {
+  background: #6366f1; border-color: rgba(99,102,241,.35); color: #fff;
+  font-size: 14px; font-weight: 700; padding: 10px 20px; border-radius: 9px;
+}
+.efCta.efHover { border-color: rgba(22,163,74,.6); background: #4f46e5; }
+.efCta.efActive { border-color: rgba(22,163,74,.9) !important; background: #4f46e5 !important; }
+
+.efCtaGhost {
+  background: #fff; border: 1.5px solid #d1d5db; color: #374151;
+  font-size: 14px; font-weight: 700; padding: 10px 18px; border-radius: 9px;
+}
+
+/* Feature checklist item */
+.efFeat {
+  align-self: flex-start;
+  gap: 8px; font-size: 13px; font-weight: 600; color: #374151;
+  padding: 6px 10px;
+}
+.featCheck {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 17px; height: 17px; flex-shrink: 0;
+  background: rgba(22,163,74,.12); color: #16a34a; border-radius: 4px;
+}
+
+.efTrust {
+  align-self: flex-start;
+  font-size: 12px; font-weight: 600; color: #9ca3af; padding: 5px 10px;
+  margin-top: 0;
+}
+
+.efBadge {
+  position: absolute; top: -9px; right: -9px;
+  width: 20px; height: 20px; background: #16a34a; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center; color: #fff;
+  opacity: 0; transition: opacity .15s;
+}
+.efBadge svg { width: 10px; height: 10px; }
+.efHover .efBadge,
+.efActive .efBadge { opacity: 1; }
+
+.caret {
+  display: inline-block; width: 2px; height: 1em;
+  background: #16a34a; margin-left: 2px; vertical-align: middle;
+  animation: blink .9s ease-in-out infinite;
+}
+
+/* ── Dashboard card ─────────────────────────────────────────────────────── */
+.dash {
+  flex: 1; display: flex; flex-direction: column; gap: 14px;
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 14px;
+  padding: 18px 20px; box-shadow: 0 4px 24px rgba(0,0,0,.07);
+}
+
+.dashHead { display: flex; align-items: flex-start; justify-content: space-between; }
+.dashTitle { font-size: 15px; font-weight: 800; color: #111; letter-spacing: -.02em; }
+.dashSubtitle { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+.dashTabs { display: flex; gap: 3px; background: #f3f4f6; border-radius: 7px; padding: 3px; }
+.dashTab    { font-size: 11px; font-weight: 600; color: #9ca3af; padding: 3px 9px; border-radius: 5px; }
+.dashTabOn  { font-size: 11px; font-weight: 700; color: #111; padding: 3px 9px; border-radius: 5px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+.dashGrid  { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.dashCell  { background: #f9fafb; border: 1px solid #f0f1f3; border-radius: 9px; padding: 10px 12px; }
+.dashV     { font-size: 18px; font-weight: 800; color: #111; letter-spacing: -.02em; }
+.dashL     { font-size: 10px; color: #9ca3af; margin: 3px 0 2px; }
+.dashU     { font-size: 10px; font-weight: 700; color: #16a34a; }
+
+.dashChartWrap { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+.dashChartHead { display: flex; align-items: center; justify-content: space-between; }
+.dashChartTitle { font-size: 11px; font-weight: 700; color: #374151; }
+.dashLive    { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: #16a34a; }
+.dashLiveDot { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 2px rgba(22,163,74,.15); }
+.dashChart   { flex: 1; min-height: 48px; display: flex; align-items: flex-end; gap: 4px; }
+.dashBar     { flex: 1; background: linear-gradient(180deg, #6366f1 0%, #a5b4fc 100%); border-radius: 3px 3px 0 0; min-height: 4px; opacity: .9; }
+
+.dashActivity { border-top: 1px solid #f0f1f3; padding-top: 11px; display: flex; flex-direction: column; gap: 8px; }
+.dashActHead  { font-size: 10px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: .04em; }
+.dashActRow   { display: flex; align-items: center; gap: 8px; }
+.dashActDot   { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: #9ca3af; }
+.act_pub   { background: #16a34a; }
+.act_edit  { background: #6366f1; }
+.act_draft { background: #f59e0b; }
+.dashActText  { flex: 1; font-size: 11px; color: #374151; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dashActTime  { font-size: 10px; color: #9ca3af; flex-shrink: 0; }
+
+/* ── EditPopover (matches real EditPopover.tsx) ───────────────────────────── */
+.popover {
+  position: absolute; width: 320px;
+  background: #1a1a1a; border: 1px solid var(--border2);
+  border-radius: 10px; padding: 14px 14px 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.05);
+  z-index: 300;
+  animation: fadeUp .15s ease;
+}
+.popLabel   { font-size: 12px; font-weight: 700; color: var(--text2); margin-bottom: 2px; }
+.popFieldId { font-size: 10.5px; color: var(--muted2); font-family: var(--mono); margin-bottom: 10px; }
+.popInput {
+  width: 100%; background: var(--surface3); border: 1px solid var(--border2);
+  border-radius: 7px; padding: 8px 10px; font-size: 13px; color: var(--text);
+  font-family: var(--sans); outline: none;
   transition: border-color .15s;
 }
-.install:hover { border-color: var(--muted2); }
+.popInput:focus { border-color: rgba(22,163,74,.5); box-shadow: 0 0 0 2px rgba(22,163,74,.1); }
+.popCount { font-size: 10.5px; color: var(--muted2); text-align: right; margin: 4px 0 10px; }
+.popRow { display: flex; align-items: center; gap: 6px; }
+.popSave {
+  padding: 6px 14px; background: var(--brand); border: none; border-radius: 6px;
+  font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; font-family: var(--sans);
+  transition: background .15s;
+}
+.popSave:hover { background: var(--brand-dim); }
+.popCancel {
+  padding: 6px 12px; background: rgba(255,255,255,.06); border: 1px solid var(--border2);
+  border-radius: 6px; font-size: 12px; font-weight: 500; color: var(--muted); cursor: pointer; font-family: var(--sans);
+}
+.popReset {
+  padding: 6px 10px; background: transparent; border: 1px solid var(--border);
+  border-radius: 6px; font-size: 11px; color: var(--muted2); cursor: pointer; font-family: var(--sans);
+}
+.popReset:hover { color: var(--text); }
 
-.cmd { color: var(--brand-glow); }
+/* ── Hover hint ─────────────────────────────────────────────────────────── */
+.hoverHint {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(8,8,8,.9); backdrop-filter: blur(8px);
+  border: 1px solid var(--border2); border-radius: 100px;
+  padding: 6px 16px; font-size: 12px; font-weight: 500; color: var(--muted);
+  pointer-events: none; white-space: nowrap; z-index: 50;
+}
+.hoverDot { display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--brand-glow); box-shadow: 0 0 5px var(--brand-glow); }
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+/* The demo is a fixed 1440x600 canvas scaled to fit by GSAP, so its internal
+   layout stays constant at every breakpoint. Only the hero text adapts. */
+@media (max-width: 768px) {
+  .stickyStage { padding-top: 168px; }
+}

@@ -1,39 +1,118 @@
 .footer {
   border-top: 1px solid var(--border);
-  padding: 32px 40px;
+  background: var(--surface);
+}
+
+.inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 60px 40px 40px;
+  display: grid;
+  grid-template-columns: 1.8fr repeat(3, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.brand {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 16px;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: 9px;
+  font-size: 15px;
   font-weight: 700;
+  letter-spacing: -.015em;
+  color: var(--text);
+}
+
+.tagline {
+  font-size: 13.5px;
   color: var(--muted);
+  line-height: 1.6;
 }
 
-.links {
+.socialLinks {
   display: flex;
-  gap: 20px;
+  gap: 8px;
 }
 
-.links a {
-  font-size: 13px;
+.social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  color: var(--muted2);
+  background: transparent;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.social:hover {
+  color: var(--text);
+  border-color: var(--muted2);
+  background: var(--surface2);
+}
+
+.cols {
+  display: contents;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.colTitle {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.col a {
+  font-size: 13.5px;
   color: var(--muted2);
   transition: color .15s;
+  line-height: 1.4;
 }
-.links a:hover { color: var(--text); }
+.col a:hover { color: var(--text); }
 
-.copy {
-  font-size: 12px;
+.bottom {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
   color: var(--muted2);
 }
 
-@media (max-width: 640px) {
-  .footer { flex-direction: column; align-items: flex-start; padding: 32px 20px; }
+@media (max-width: 860px) {
+  .inner {
+    grid-template-columns: 1fr 1fr;
+    padding: 48px 24px 32px;
+  }
+  .brand {
+    grid-column: 1 / -1;
+  }
+  .cols {
+    display: contents;
+  }
+}
+
+@media (max-width: 480px) {
+  .inner { grid-template-columns: 1fr 1fr; }
+  .bottom { padding: 20px 24px; flex-direction: column; align-items: flex-start; }
 }

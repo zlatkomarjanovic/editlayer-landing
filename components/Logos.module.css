@@ -1,0 +1,66 @@
+.wrap {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  overflow: hidden;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+
+.track {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.track::before,
+.track::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 100px;
+  z-index: 2;
+  pointer-events: none;
+}
+.track::before { left: 0;  background: linear-gradient(90deg,  var(--bg), transparent); }
+.track::after  { right: 0; background: linear-gradient(270deg, var(--bg), transparent); }
+
+.row {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+/* Keyframes must live inside this module — Turbopack/CSS-Modules scope
+   animation names, so a global @keyframes wouldn't match the reference. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.track:hover .row { animation-play-state: paused; }
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 28px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted2);
+  letter-spacing: -.01em;
+  white-space: nowrap;
+  border-right: 1px solid var(--border);
+  transition: color .2s;
+}
+.item:hover { color: var(--muted); }

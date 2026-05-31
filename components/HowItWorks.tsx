@@ -1,71 +1,41 @@
-import styles from "./Section.module.css";
+import styles from "./HowItWorks.module.css";
+import AnimateIn from "./AnimateIn";
 
 const steps = [
-  {
-    n: "01",
-    title: "Install the package",
-    body: (
-      <>
-        Run <code>npm install @editlayer/next</code> and <code>npx editlayer init</code> inside your Next.js project. The CLI scaffolds the API routes and config file automatically.
-      </>
-    ),
-  },
-  {
-    n: "02",
-    title: "Mark editable fields",
-    body: (
-      <>
-        Wrap any headline, paragraph, or link with <code>{"<EditableText>"}</code>. Keep your existing markup — EditLayer wraps around it, never rewrites it.
-      </>
-    ),
-  },
-  {
-    n: "03",
-    title: "Set env vars, deploy",
-    body: "Add your secret, site URL, and Resend API key to Vercel. Add your owner emails. Push. That's the entire backend — no database, no server to run.",
-  },
-  {
-    n: "04",
-    title: "Edit live",
-    body: (
-      <>
-        Visit <code>yoursite.com/?edit=true</code>. Enter your email. Click the magic link. Green outlines appear on every editable field. Click, type, save, publish.
-      </>
-    ),
-  },
-  {
-    n: "05",
-    title: "Commit → redeploy",
-    body: (
-      <>
-        Publishing commits <code>editlayer/content.json</code> directly to your GitHub repo via the API. Vercel detects the commit and redeploys automatically.
-      </>
-    ),
-  },
-  {
-    n: "06",
-    title: "Invite your team",
-    body: "Add editor emails in your env vars or use the in-site Access panel. Editors save drafts; only owners publish. Role-based, secure by default.",
-  },
+  { n: "01", title: "Install the package",   body: "Run one command to install and scaffold. The CLI creates the API routes and config file automatically — nothing to build from scratch.", tag: "npm install @editlayer/next" },
+  { n: "02", title: "Mark editable content", body: "Wrap any headline, paragraph, or link with EditableText. Keep your existing className and styles — EditLayer wraps around them, never rewrites them.", tag: "<EditableText id=\"...\">" },
+  { n: "03", title: "Set env vars & deploy", body: "Add your secret, site URL, Resend API key, and GitHub token to Vercel. Push to GitHub. That's the entire backend.", tag: "4 env vars" },
+  { n: "04", title: "Open edit mode",        body: "Visit yoursite.com/?edit=true. Enter your email, click the magic link. Green outlines appear on every editable field immediately.", tag: "?edit=true" },
+  { n: "05", title: "Click, type, publish",  body: "Click any field to edit inline. See the live preview as you type. Save a draft to share, or hit Publish to commit directly to GitHub.", tag: "git commit" },
+  { n: "06", title: "Vercel redeploys",      body: "Publishing writes editlayer/content.json to your repo via the GitHub API. Vercel detects the commit and redeploys automatically.", tag: "zero infra" },
 ];
 
 export default function HowItWorks() {
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="how-it-works">
       <div className={styles.inner}>
-        <p className={styles.label}>How it works</p>
-        <h2 className={styles.h2}>Simple by design</h2>
-        <p className={styles.sub}>No third-party CMS to configure. No schema to model. No pipeline to maintain. Your site is the editor.</p>
+        <AnimateIn>
+          <div className={styles.header}>
+            <p className={styles.label}>How it works</p>
+            <h2 className={styles.h2}>Up and running in minutes.</h2>
+            <p className={styles.sub}>Six steps from install to live editing. No database, no third-party CMS, no pipeline changes.</p>
+          </div>
+        </AnimateIn>
 
-        <div className={styles.grid}>
-          {steps.map((s) => (
-            <div key={s.n} className={styles.card}>
-              <div className={styles.stepNum}>{s.n}</div>
-              <h3 className={styles.stepTitle}>{s.title}</h3>
-              <p className={styles.stepBody}>{s.body}</p>
-            </div>
-          ))}
-        </div>
+        <AnimateIn delay={120}>
+          <div className={styles.grid}>
+            {steps.map((s) => (
+              <div key={s.n} className={styles.step}>
+                <div className={styles.stepTop}>
+                  <span className={styles.num}>{s.n}</span>
+                  {s.tag && <code className={styles.tag}>{s.tag}</code>}
+                </div>
+                <h3 className={styles.title}>{s.title}</h3>
+                <p className={styles.body}>{s.body}</p>
+              </div>
+            ))}
+          </div>
+        </AnimateIn>
       </div>
     </section>
   );
