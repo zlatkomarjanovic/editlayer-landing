@@ -38,17 +38,26 @@ export default function Hero() {
       const m = () => {
         const vw = window.innerWidth;
         const vh = window.innerHeight;
-        const fitW = (vw - 48) / DEMO_W;            // never overflow width
-        const fitH = (vh - 96) / DEMO_H;            // leave nav + bottom gap
 
-        // PREVIEW (scroll = 0): peek ~100px below the hero text.
+        const isMobile = vw < 768;
+        // Side padding: leave a little breathing room on each edge.
+        const sidePad  = isMobile ? 12 : 48;
+        // Top/bottom gaps when fully revealed.
+        const topGap   = 40;   // user-requested: 40px from viewport top
+        const botGap   = isMobile ? 12 : 28;
+
+        const fitW = (vw - sidePad * 2) / DEMO_W;
+        // fitH ensures bottom never exceeds viewport: DEMO_H * scale <= vh - topGap - botGap
+        const fitH = (vh - topGap - botGap) / DEMO_H;
+
+        // PREVIEW: peek below hero text (less intrusive on mobile).
         const startScale = Math.min(fitW, 1);
         const contentBottom = content.offsetTop + content.offsetHeight;
-        const startY = contentBottom + 100;
+        const startY = contentBottom + (isMobile ? 60 : 100);
 
-        // FULL (scroll = 1): scaled to fit, vertically centered, clears nav.
+        // FULL: pinned 40px from viewport top, scaled to fit width & height.
         const endScale = Math.min(fitW, fitH, 1);
-        const endY = Math.max(84, (vh - DEMO_H * endScale) / 2);
+        const endY = topGap;
 
         return { startScale, startY, endScale, endY };
       };
@@ -83,15 +92,15 @@ export default function Hero() {
         duration: 0.28,
       }, 0);
 
-      // Dashboard: fully in view by ~35% of scroll, then holds.
+      // Dashboard: fully in view by ~25% of scroll, then holds.
       tl.fromTo(demo,
         { y: () => m().startY, scale: () => m().startScale },
-        { y: () => m().endY,   scale: () => m().endScale, ease: "none", duration: 0.35 },
+        { y: () => m().endY,   scale: () => m().endScale, ease: "none", duration: 0.25 },
         0,
       );
 
-      // Spacer fills the rest (total = 1.0) so the dashboard holds after 35%.
-      tl.to({}, { duration: 0.65 });
+      // Spacer fills the rest (total = 1.0) so the dashboard holds after 25%.
+      tl.to({}, { duration: 0.75 });
     }, heroRef);
 
     // Recompute once everything (fonts/images) has settled.

@@ -10,23 +10,23 @@
 }
 
 /* ── Hero section ────────────────────────────────────────────────────────── */
-/* Scroll track — ~100vh of scrubbing while the stage stays pinned, so the
-   dashboard reaches full view within a short scroll. */
+/* svh = small viewport height — prevents mobile browser chrome from cutting
+   off the sticky stage on iOS/Android. */
 .heroScroll {
   position: relative;
-  height: 200vh;
+  height: 200svh;
 }
 
 /* Sticky stage — CSS pin (no GSAP pin-spacer → no React removeChild crash). */
 .stickyStage {
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 216px; /* ~120px of breathing room below the nav, above badge */
+  padding-top: 200px;
 }
 
 .glowBg {
@@ -442,7 +442,14 @@
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
 /* The demo is a fixed 1440x600 canvas scaled to fit by GSAP, so its internal
-   layout stays constant at every breakpoint. Only the hero text adapts. */
+   layout stays constant at every breakpoint. Only the hero text and padding adapt. */
 @media (max-width: 768px) {
-  .stickyStage { padding-top: 168px; }
+  .stickyStage { padding-top: 100px; }
+  /* Tighten hero text for narrow screens */
+  .headline { font-size: clamp(28px, 9vw, 48px); }
+  .sub { font-size: clamp(14px, 4vw, 17px); max-width: 92vw; }
+}
+
+@media (max-width: 480px) {
+  .stickyStage { padding-top: 76px; }
 }
