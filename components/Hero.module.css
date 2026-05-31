@@ -11,10 +11,13 @@
 
 /* ── Hero section ────────────────────────────────────────────────────────── */
 /* svh = small viewport height — prevents mobile browser chrome from cutting
-   off the sticky stage on iOS/Android. */
+   off the sticky stage on iOS/Android.
+   135svh = 100svh sticky viewport + 35svh of scroll track. The dashboard
+   animation completes within the 35svh, then the section exits immediately
+   so there's no dead "hold" scroll before the next section appears. */
 .heroScroll {
   position: relative;
-  height: 200svh;
+  height: 135svh;
 }
 
 /* Sticky stage — CSS pin (no GSAP pin-spacer → no React removeChild crash). */

@@ -55,9 +55,9 @@ export default function Hero() {
         const contentBottom = content.offsetTop + content.offsetHeight;
         const startY = contentBottom + (isMobile ? 60 : 100);
 
-        // FULL: pinned 40px from viewport top, scaled to fit width & height.
+        // FULL: pinned 60px from viewport top, scaled to fit width & height.
         const endScale = Math.min(fitW, fitH, 1);
-        const endY = topGap;
+        const endY = 60;
 
         return { startScale, startY, endScale, endY };
       };
@@ -92,15 +92,18 @@ export default function Hero() {
         duration: 0.28,
       }, 0);
 
-      // Dashboard: fully in view by ~25% of scroll, then holds.
+      // Dashboard: fully in view early, same duration as the text tween so
+      // both finish at the same point — then a tiny spacer lets it settle before
+      // the sticky section exits and normal scrolling resumes.
       tl.fromTo(demo,
         { y: () => m().startY, scale: () => m().startScale },
-        { y: () => m().endY,   scale: () => m().endScale, ease: "none", duration: 0.25 },
+        { y: () => m().endY,   scale: () => m().endScale, ease: "none", duration: 0.28 },
         0,
       );
 
-      // Spacer fills the rest (total = 1.0) so the dashboard holds after 25%.
-      tl.to({}, { duration: 0.75 });
+      // Tiny hold (0.04) so the last rendered frame is fully settled, then the
+      // heroScroll track ends and the next section scrolls in immediately.
+      tl.to({}, { duration: 0.04 });
     }, heroRef);
 
     // Recompute once everything (fonts/images) has settled.
