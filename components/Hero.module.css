@@ -396,6 +396,71 @@
 .dashActText  { flex: 1; font-size: 11px; color: #374151; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dashActTime  { font-size: 10px; color: #9ca3af; flex-shrink: 0; }
 
+/* ── Save draft tooltip ──────────────────────────────────────────────────── */
+.saveDraftPop {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #1c1c1c;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,.65);
+  white-space: nowrap;
+  z-index: 300;
+  display: flex; align-items: center; gap: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.4);
+  animation: fadeUp .15s ease;
+}
+.popSpinner {
+  display: inline-block; width: 10px; height: 10px;
+  border: 1.5px solid rgba(255,255,255,.2);
+  border-top-color: rgba(255,255,255,.7);
+  border-radius: 50%;
+  animation: spin .65s linear infinite;
+  flex-shrink: 0;
+}
+.popCheck { color: #4ade80; flex-shrink: 0; font-size: 11px; }
+
+/* ── Publish progress popup ──────────────────────────────────────────────── */
+.pubSteps {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 250px;
+  background: #1c1c1c;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 10px;
+  padding: 12px 13px;
+  z-index: 300;
+  display: flex; flex-direction: column; gap: 9px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.5);
+  animation: fadeUp .15s ease;
+}
+.pubStepRow {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 500;
+}
+.pubStepDone    { color: #4ade80; }
+.pubStepActive  { color: rgba(255,255,255,.9); }
+.pubStepPending { color: rgba(255,255,255,.25); }
+.pubSpinner {
+  display: inline-block; width: 11px; height: 11px;
+  border: 1.5px solid rgba(255,255,255,.2);
+  border-top-color: rgba(255,255,255,.75);
+  border-radius: 50%;
+  animation: spin .65s linear infinite;
+  flex-shrink: 0;
+}
+.pubDot {
+  display: inline-block; width: 11px; height: 11px;
+  border: 1.5px solid rgba(255,255,255,.2);
+  border-radius: 50%; flex-shrink: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
 /* ── EditPopover (matches real EditPopover.tsx) ───────────────────────────── */
 .popover {
   position: absolute; width: 320px;

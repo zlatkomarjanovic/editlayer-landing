@@ -92,11 +92,10 @@ export default function Hero() {
         duration: 0.28,
       }, 0);
 
-      // Dashboard: fully in view early, same duration as the text tween so
-      // both finish at the same point — then a tiny spacer lets it settle before
-      // the sticky section exits and normal scrolling resumes.
+      // Dashboard: starts 15% over-scaled so it "zooms in" as it rises —
+      // settling at endScale gives the effect of the window landing into place.
       tl.fromTo(demo,
-        { y: () => m().startY, scale: () => m().startScale },
+        { y: () => m().startY, scale: () => m().startScale * 1.15 },
         { y: () => m().endY,   scale: () => m().endScale, ease: "none", duration: 0.28 },
         0,
       );
@@ -212,6 +211,13 @@ const DEFAULTS: Record<FId, string> = {
   "home.trust":        "Trusted by 2,000+ product teams",
 };
 
+const PUB_STEPS = [
+  "Committing content.json to GitHub…",
+  "Vercel build triggered…",
+  "Build complete · redeploying…",
+  "✓ Live! Reload to see changes.",
+];
+
 function EditLayerDemo() {
   const shellRef    = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
@@ -232,10 +238,12 @@ function EditLayerDemo() {
   const [unsaved,    setUnsaved]    = useState<Set<FId>>(new Set());
   const [popover,    setPopover]    = useState<{ id: FId; top: number; left: number } | null>(null);
   const [editVal,    setEditVal]    = useState("");
-  const [saving,     setSaving]     = useState(false);
-  const [saved,      setSaved]      = useState(false);
-  const [publishing, setPublishing] = useState(false);
-  const [pubDone,    setPubDone]    = useState(false);
+  const [saving,        setSaving]        = useState(false);
+  const [saved,         setSaved]         = useState(false);
+  const [saveDraftLog,  setSaveDraftLog]  = useState<string | null>(null);
+  const [publishing,    setPublishing]    = useState(false);
+  const [pubDone,       setPubDone]       = useState(false);
+  const [pubStep,       setPubStep]       = useState(0); // 0=hidden 1-4=steps
 
   function clear() { timers.current.forEach(clearTimeout); timers.current = []; }
 
@@ -282,7 +290,7 @@ function EditLayerDemo() {
   const runAuto = useCallback(() => {
     clear(); hovRef.current = false;
     let t = 0;
-    q(() => { setVals({...DEFAULTS}); setHoverFid(null); setCurVis(false); setUnsaved(new Set()); setSaving(false); setSaved(false); setPublishing(false); setPubDone(false); }, 0);
+    q(() => { setVals({...DEFAULTS}); setHoverFid(null); setCurVis(false); setUnsaved(new Set()); setSaving(false); setSaved(false); setSaveDraftLog(null); setPublishing(false); setPubDone(false); setPubStep(0); }, 0);
     // headline
     t = 900; q(() => setCurVis(true), t); moveTo(headlineRef, t+100);
     t += 950; q(() => setHoverFid("home.hero.title"), t); triggerClick(t+200);
@@ -292,15 +300,19 @@ function EditLayerDemo() {
     t += 600; moveTo(ctaRef, t); t+=900; q(() => setHoverFid("home.hero.cta"), t); triggerClick(t+200);
     const c1 = scheduleType(FROM_CTA, TO_CTA, "home.hero.cta", t+400); t=c1;
     q(() => setUnsaved(s=>new Set([...s,"home.hero.cta"])), t); q(() => setHoverFid(null), t);
-    // save draft
-    t += 600; moveTo(saveButtonRef, t); t+=700; triggerClick(t);
-    q(() => setSaving(true), t+100); t+=1000; q(() => { setSaving(false); setSaved(true); }, t);
-    t += 1200; q(() => setSaved(false), t);
-    // publish
-    t += 400; moveTo(publishButtonRef, t); t+=700; triggerClick(t);
-    q(() => setPublishing(true), t+100); t+=1300;
-    q(() => { setPublishing(false); setPubDone(true); setUnsaved(new Set()); }, t);
-    t += 1800; q(() => setPubDone(false), t);
+    // save draft — show backend log below the button
+    t += 600; moveTo(saveButtonRef, t); t += 700; triggerClick(t);
+    q(() => { setSaving(true); setSaveDraftLog("Serializing content fields…"); }, t + 100);
+    t += 450; q(() => setSaveDraftLog("Writing to editlayer/content.json"), t);
+    t += 500; q(() => { setSaving(false); setSaved(true); setSaveDraftLog("Draft saved ✓"); }, t);
+    t += 900; q(() => { setSaved(false); setSaveDraftLog(null); }, t);
+    // publish — 4-step progress popup
+    t += 500; moveTo(publishButtonRef, t); t += 700; triggerClick(t);
+    q(() => { setPublishing(true); setPubStep(1); }, t + 100);
+    t += 700;  q(() => setPubStep(2), t);
+    t += 800;  q(() => setPubStep(3), t);
+    t += 700;  q(() => { setPublishing(false); setPubDone(true); setUnsaved(new Set()); setPubStep(4); }, t);
+    t += 2000; q(() => { setPubDone(false); setPubStep(0); }, t);
     // restart
     t += 600; q(() => setCurVis(false), t); t+=600; q(runAuto, t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -345,18 +357,24 @@ function EditLayerDemo() {
     setPopover(null);
   }
 
+  const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
+
   async function handleSaveDraft() {
-    setSaving(true);
-    await new Promise(r => setTimeout(r, 900));
-    setSaving(false); setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    setSaving(true); setSaveDraftLog("Serializing content fields…");
+    await delay(400);
+    setSaveDraftLog("Writing to editlayer/content.json");
+    await delay(500);
+    setSaving(false); setSaved(true); setSaveDraftLog("Draft saved ✓");
+    await delay(1800);
+    setSaved(false); setSaveDraftLog(null);
   }
 
   async function handlePublish() {
-    setPublishing(true);
-    await new Promise(r => setTimeout(r, 1200));
-    setPublishing(false); setPubDone(true); setUnsaved(new Set());
-    setTimeout(() => setPubDone(false), 2500);
+    setPublishing(true); setPubStep(1);
+    await delay(700);  setPubStep(2);
+    await delay(800);  setPubStep(3);
+    await delay(700);  setPublishing(false); setPubDone(true); setUnsaved(new Set()); setPubStep(4);
+    await delay(2500); setPubDone(false); setPubStep(0);
   }
 
   const unsavedCount = unsaved.size;
@@ -413,20 +431,49 @@ function EditLayerDemo() {
         <span className={styles.tbSpacer} />
         <div className={styles.tbR}>
           <span className={styles.tbMeta}>{changeLabel}</span>
-          <button
-            ref={saveButtonRef}
-            className={`${styles.tbSave} ${(saving || saved) ? styles.tbSaveOn : ""}`}
-            onClick={isHov ? handleSaveDraft : undefined}
-          >
-            {saving ? "Saving…" : saved ? "✓ Saved" : "Save draft"}
-          </button>
-          <button
-            ref={publishButtonRef}
-            className={`${styles.tbPublish} ${publishing ? styles.tbPublishBusy : ""} ${pubDone ? styles.tbPublishDone : ""}`}
-            onClick={isHov ? handlePublish : undefined}
-          >
-            {publishing ? "Publishing…" : pubDone ? "✓ Published" : "Publish"}
-          </button>
+          <div style={{ position: "relative" }}>
+            <button
+              ref={saveButtonRef}
+              className={`${styles.tbSave} ${(saving || saved) ? styles.tbSaveOn : ""}`}
+              onClick={isHov ? handleSaveDraft : undefined}
+            >
+              {saving ? "Saving…" : saved ? "✓ Saved" : "Save draft"}
+            </button>
+            {saveDraftLog && (
+              <div className={styles.saveDraftPop}>
+                {saving && <span className={styles.popSpinner} />}
+                {saved && <span className={styles.popCheck}>✓</span>}
+                {saveDraftLog}
+              </div>
+            )}
+          </div>
+          <div style={{ position: "relative" }}>
+            <button
+              ref={publishButtonRef}
+              className={`${styles.tbPublish} ${publishing ? styles.tbPublishBusy : ""} ${pubDone ? styles.tbPublishDone : ""}`}
+              onClick={isHov ? handlePublish : undefined}
+            >
+              {publishing ? "Publishing…" : pubDone ? "✓ Published" : "Publish"}
+            </button>
+            {pubStep > 0 && (
+              <div className={styles.pubSteps}>
+                {PUB_STEPS.map((label, i) => {
+                  const stepN = i + 1;
+                  const done   = pubStep > stepN;
+                  const active = pubStep === stepN;
+                  return (
+                    <div
+                      key={i}
+                      className={`${styles.pubStepRow} ${done ? styles.pubStepDone : active ? styles.pubStepActive : styles.pubStepPending}`}
+                    >
+                      {done   ? <CheckTiny /> : active ? <span className={styles.pubSpinner} /> : <span className={styles.pubDot} />}
+                      {label}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
           <button className={styles.tbGhost}>Access</button>
           <button className={styles.tbGhost}>History</button>
           <button className={styles.tbGhost}>Exit</button>
