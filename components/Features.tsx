@@ -1,5 +1,6 @@
 import styles from "./Section.module.css";
 import AnimateIn from "./AnimateIn";
+import { EditableText } from "@editlayer/next";
 
 const features = [
   { icon: <LockIcon />,   title: "Magic link auth",   body: "Email-only login with short-lived signed tokens. No passwords, no OAuth config. HTTP-only cookies for sessions." },
@@ -15,9 +16,9 @@ export default function Features() {
     <section className={styles.section}>
       <div className={styles.inner}>
         <AnimateIn>
-          <p className={styles.label}>What you get</p>
-          <h2 className={styles.h2}>Everything you need.<br />Nothing you don&apos;t.</h2>
-          <p className={styles.sub}>Built for developers who want to hand editing control to their clients, without handing over their codebase.</p>
+          <p className={styles.label}><EditableText id="features.label">What you get</EditableText></p>
+          <h2 className={styles.h2}><EditableText id="features.title">Everything you need. Nothing you don&apos;t.</EditableText></h2>
+          <p className={styles.sub}><EditableText id="features.sub">Built for developers who want to hand editing control to their clients, without handing over their codebase.</EditableText></p>
         </AnimateIn>
 
         <div className={styles.featuresGrid}>

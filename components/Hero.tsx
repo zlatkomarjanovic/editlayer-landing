@@ -3,6 +3,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./Hero.module.css";
+import { EditableText } from "@editlayer/next";
 
 const FROM_HEADLINE = "Build Something Amazing";
 const TO_HEADLINE   = "Ship Marketing Copy Fast";
@@ -131,18 +132,17 @@ export default function Hero() {
         <div ref={contentRef} className={styles.content}>
         <div className={styles.badge}>
           <span className={styles.badgeDot} />
-          Visual UI for NextJS websites
+          <EditableText id="home.hero.eyebrow">Visual UI for NextJS websites</EditableText>
         </div>
 
         <h1 className={styles.h1}>
-          Your Next.js site.<br />
+          <EditableText id="home.hero.title.line1">Your Next.js site.</EditableText><br />
           <span className={styles.h1Serif}>Edited <em className={styles.em}>live</em> by your team.</span>
         </h1>
 
         <p className={styles.sub}>
-          Add <code className={styles.ic}>?edit=true</code> to any URL. Log in with a magic link.
-          Edit headlines, CTAs, and copy directly on the page.
-          Vercel redeploys automatically on publish.
+          Add <code className={styles.ic}>?edit=true</code> to any URL. Log in with a magic link.{" "}
+          <EditableText id="home.hero.sub">Edit headlines, CTAs, and copy directly on the page. Vercel redeploys automatically on publish.</EditableText>
         </p>
 
         <div className={styles.ctaRow}>
@@ -151,7 +151,7 @@ export default function Hero() {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            See detailed instructions
+            <EditableText id="home.hero.cta.primary">See detailed instructions</EditableText>
           </a>
           <button className={styles.install} onClick={copy}>
             <span className={styles.dollar}>$</span>

@@ -1,4 +1,27 @@
 {
   "version": 1,
-  "fields": {}
+  "fields": {
+    "home.hero.eyebrow": "Visual UI for NextJS websites",
+    "home.hero.title.line1": "Your Next.js site.",
+    "home.hero.sub": "Edit headlines, CTAs, and copy directly on the page. Vercel redeploys automatically on publish.",
+    "home.hero.cta.primary": "See detailed instructions",
+    "cta.label": "Start today",
+    "cta.title": "One command away from a live editor.",
+    "cta.sub": "Your marketing team won't need to open a code editor just to change a headline. Give them the power to edit, safely.",
+    "cta.cta.primary": "Read the setup guide",
+    "cta.cta.secondary": "npm install @editlayer/next",
+    "features.label": "What you get",
+    "features.title": "Everything you need. Nothing you don't.",
+    "features.sub": "Built for developers who want to hand editing control to their clients, without handing over their codebase.",
+    "hiw.label": "How it works",
+    "hiw.title": "Up and running in minutes.",
+    "hiw.sub": "Six steps from install to live editing. No database, no third-party CMS, no pipeline changes.",
+    "footer.tagline": "Inline content editing for Next.js. No CMS required.",
+    "footer.bottom": "Built for developers who ship fast."
+  },
+  "meta": {
+    "updatedAt": "2026-06-02T12:00:00.000Z",
+    "updatedBy": "init",
+    "commitSha": null
+  }
 }

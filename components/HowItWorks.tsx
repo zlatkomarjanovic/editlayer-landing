@@ -1,5 +1,6 @@
 import styles from "./HowItWorks.module.css";
 import AnimateIn from "./AnimateIn";
+import { EditableText } from "@editlayer/next";
 
 const steps = [
   { n: "01", title: "Install the package",   body: "Run one command to install and scaffold. The CLI creates the API routes and config file automatically. Nothing to build from scratch.", tag: "npm install @editlayer/next" },
@@ -16,9 +17,9 @@ export default function HowItWorks() {
       <div className={styles.inner}>
         <AnimateIn>
           <div className={styles.header}>
-            <p className={styles.label}>How it works</p>
-            <h2 className={styles.h2}>Up and running in minutes.</h2>
-            <p className={styles.sub}>Six steps from install to live editing. No database, no third-party CMS, no pipeline changes.</p>
+            <p className={styles.label}><EditableText id="hiw.label">How it works</EditableText></p>
+            <h2 className={styles.h2}><EditableText id="hiw.title">Up and running in minutes.</EditableText></h2>
+            <p className={styles.sub}><EditableText id="hiw.sub">Six steps from install to live editing. No database, no third-party CMS, no pipeline changes.</EditableText></p>
           </div>
         </AnimateIn>
 

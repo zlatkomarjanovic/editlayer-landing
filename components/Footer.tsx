@@ -1,4 +1,5 @@
 import styles from "./Footer.module.css";
+import { EditableText } from "@editlayer/next";
 
 export default function Footer() {
   return (
@@ -15,7 +16,7 @@ export default function Footer() {
             <span>EditLayer</span>
           </div>
           <p className={styles.tagline}>
-            Inline content editing for<br />Next.js. No CMS required.
+            <EditableText id="footer.tagline">Inline content editing for Next.js. No CMS required.</EditableText>
           </p>
           <div className={styles.socialLinks}>
             <a href="https://github.com/editlayer" target="_blank" rel="noreferrer" className={styles.social} aria-label="GitHub">
@@ -56,7 +57,7 @@ export default function Footer() {
 
       <div className={styles.bottom}>
         <span>© {new Date().getFullYear()} EditLayer. MIT License.</span>
-        <span>Built for developers who ship fast.</span>
+        <span><EditableText id="footer.bottom">Built for developers who ship fast.</EditableText></span>
       </div>
     </footer>
   );
