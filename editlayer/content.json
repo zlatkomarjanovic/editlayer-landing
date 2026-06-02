@@ -8,7 +8,8 @@
     "home.hero.install.cmd": "npm install @editlayer/next",
 
     "cta.label": "Start today",
-    "cta.title": "One command away from a live editor.",
+    "cta.title.line1": "One command away from a",
+    "cta.title.line2": "live editor.",
     "cta.sub": "Your marketing team won't need to open a code editor just to change a headline. Give them the power to edit, safely.",
     "cta.cta.primary": "Read the setup guide",
     "cta.cta.secondary": "npm install @editlayer/next",
@@ -70,7 +71,6 @@
     "footer.tagline": "Inline content editing for Next.js. No CMS required.",
     "footer.col0.title": "Product",
     "footer.col1.title": "Resources",
-    "footer.col2.title": "Legal",
     "footer.bottom": "Built for developers who ship fast."
   },
   "meta": {

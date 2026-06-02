@@ -7,7 +7,13 @@ export default function Cta() {
       <div className={styles.glow} />
       <div className={styles.noise} />
       <p className={styles.label}><EditableText id="cta.label">Start today</EditableText></p>
-      <h2 className={styles.h2}><EditableText id="cta.title">One command away from a live editor.</EditableText></h2>
+      <h2 className={styles.h2}>
+        <EditableText id="cta.title.line1">One command away from a</EditableText>
+        <br />
+        <span className={styles.h2Serif}>
+          <EditableText id="cta.title.line2">live editor.</EditableText>
+        </span>
+      </h2>
       <p className={styles.sub}>
         <EditableText id="cta.sub">Your marketing team won&apos;t need to open a code editor just to change a headline. Give them the power to edit, safely.</EditableText>
       </p>
@@ -28,8 +34,6 @@ export default function Cta() {
         <span className={styles.muted}>TypeScript</span>
         <span className={styles.dot}>·</span>
         <span className={styles.muted}>Next.js App Router</span>
-        <span className={styles.dot}>·</span>
-        <span className={styles.muted}>MIT License</span>
       </div>
     </div>
   );
