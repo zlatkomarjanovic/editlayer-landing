@@ -568,9 +568,6 @@
   .efFeat    { font-size: 11px; padding: 4px 8px; gap: 6px; }
   .efTrust   { font-size: 10px; }
 
-  /* ── Demo: Analytics overview — hidden on mobile ── */
-  .siteRight { display: none; }
-
   /* ── Demo: height auto so it shrinks to fit left-column content ── */
   .demo { height: auto; }
 
