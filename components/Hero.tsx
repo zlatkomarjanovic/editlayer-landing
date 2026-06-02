@@ -30,34 +30,34 @@ export default function Hero() {
       const content = contentRef.current!;
       const demo    = demoRef.current!;
 
-      const DEMO_W = 1440;
-      const DEMO_H = 600;   // shorter, less boxy dashboard
-
-      // All positions/scales are measured (re-evaluated on every refresh via
-      // invalidateOnRefresh), so it stays correct at any viewport size.
+      // All positions/scales are measured live (re-evaluated on every refresh).
+      // Demo is now responsive (CSS width: 100%), so we read actual dimensions
+      // instead of assuming a fixed 1440×600 canvas.
       const m = () => {
         const vw = window.innerWidth;
         const vh = window.innerHeight;
-
         const isMobile = vw < 768;
-        // Side padding: leave a little breathing room on each edge.
-        const sidePad  = isMobile ? 12 : 48;
-        // Top/bottom gaps when fully revealed.
-        const topGap   = 40;   // user-requested: 40px from viewport top
-        const botGap   = isMobile ? 12 : 28;
 
-        const fitW = (vw - sidePad * 2) / DEMO_W;
-        // fitH ensures bottom never exceeds viewport: DEMO_H * scale <= vh - topGap - botGap
-        const fitH = (vh - topGap - botGap) / DEMO_H;
+        // Measure the real demo size (after CSS sets responsive width).
+        const dw = demo.offsetWidth  || 1;
+        const dh = demo.offsetHeight || 1;
 
-        // PREVIEW: peek below hero text (less intrusive on mobile).
+        // How much to scale so the demo fits within the viewport with gaps.
+        const topGap = 60;
+        const botGap = isMobile ? 12 : 28;
+        const sidePad = isMobile ? 12 : 48;
+        const fitW = (vw - sidePad * 2) / dw;
+        const fitH = (vh - topGap - botGap) / dh;
+
+        // Since CSS already caps demo width to the viewport, fitW ≈ 1 on most
+        // screens — scale is driven almost entirely by height.
+        const endScale = Math.min(fitW, fitH, 1);
+        const endY = topGap;
+
+        // Preview: peek below hero text, no over-scale needed.
         const startScale = Math.min(fitW, 1);
         const contentBottom = content.offsetTop + content.offsetHeight;
-        const startY = contentBottom + (isMobile ? 60 : 100);
-
-        // FULL: pinned 60px from viewport top, scaled to fit width & height.
-        const endScale = Math.min(fitW, fitH, 1);
-        const endY = 60;
+        const startY = contentBottom + (isMobile ? 48 : 80);
 
         return { startScale, startY, endScale, endY };
       };
@@ -92,10 +92,8 @@ export default function Hero() {
         duration: 0.28,
       }, 0);
 
-      // Dashboard: starts 15% over-scaled so it "zooms in" as it rises —
-      // settling at endScale gives the effect of the window landing into place.
       tl.fromTo(demo,
-        { y: () => m().startY, scale: () => m().startScale * 1.15 },
+        { y: () => m().startY, scale: () => m().startScale },
         { y: () => m().endY,   scale: () => m().endScale, ease: "none", duration: 0.28 },
         0,
       );

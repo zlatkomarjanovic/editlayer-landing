@@ -106,7 +106,7 @@
 
 .btnPrimary {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 20px; background: var(--brand); color: #fff;
+  height: 42px; padding: 0 20px; background: var(--brand); color: #fff;
   border-radius: 9px; font-size: 13.5px; font-weight: 700;
   transition: background .15s, transform .12s, box-shadow .15s; white-space: nowrap;
 }
@@ -114,8 +114,9 @@
 
 .install {
   display: inline-flex; align-items: center; gap: 8px;
+  height: 42px; padding: 0 14px;
   background: var(--surface); border: 1px solid var(--border2);
-  border-radius: 9px; padding: 10px 14px;
+  border-radius: 9px;
   font-family: var(--mono); font-size: 12.5px; color: var(--muted);
   cursor: pointer; transition: border-color .15s, background .15s; white-space: nowrap;
 }
@@ -142,22 +143,25 @@
   position: absolute;
   top: 0;
   left: 50%;
-  transform: translateX(-50%); /* centering only — GSAP owns demoInner */
-  width: 1440px;
-  z-index: 5; /* sits above the blurred-out text */
+  transform: translateX(-50%);
+  /* Responsive: never wider than viewport, up to 1440px on large screens */
+  width: min(1440px, calc(100vw - 32px));
+  z-index: 5;
+  pointer-events: none;
 }
 
 .demoInner {
-  /* GSAP controls translateY + scale (transform-origin: top center) */
-  width: 1440px;
+  width: 100%;
   will-change: transform;
+  pointer-events: none;
 }
 
 /* ── Demo browser shell ──────────────────────────────────────────────────── */
 .demo {
   position: relative;
-  width: 1440px;
+  width: 100%; /* fills demoInner which fills demoWrap (responsive) */
   height: 85vh;
+  pointer-events: auto; /* re-enable so the interactive demo works */
   display: flex;
   flex-direction: column;  /* chrome + toolbar fixed, site fills the rest */
   background: #141414;
@@ -509,15 +513,73 @@
 .hoverDot { display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--brand-glow); box-shadow: 0 0 5px var(--brand-glow); }
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
-/* The demo is a fixed 1440x600 canvas scaled to fit by GSAP, so its internal
-   layout stays constant at every breakpoint. Only the hero text and padding adapt. */
+/* ── Responsive: hero text (all breakpoints) ─────────────────────────────── */
 @media (max-width: 768px) {
   .stickyStage { padding-top: 100px; }
-  /* Tighten hero text for narrow screens */
-  .headline { font-size: clamp(28px, 9vw, 48px); }
-  .sub { font-size: clamp(14px, 4vw, 17px); max-width: 92vw; }
+}
+@media (max-width: 480px) {
+  .stickyStage { padding-top: 72px; }
 }
 
-@media (max-width: 480px) {
-  .stickyStage { padding-top: 76px; }
+/* ── Responsive: demo internals ──────────────────────────────────────────── */
+/* The demo is now fluid width so its internal layout must adapt too. Below
+   768px the two-column siteBody stacks into a single column. */
+@media (max-width: 768px) {
+  /* Chrome dots scale down */
+  .d1, .d2, .d3 { width: 9px; height: 9px; }
+  .chrome { padding: 8px 12px; gap: 8px; }
+  .urlBar  { padding: 4px 10px; font-size: 11px; max-width: 240px; }
+
+  /* Toolbar compact */
+  .toolbar { height: 40px; padding: 0 12px; gap: 7px; }
+  .brand   { font-size: 12px; }
+  .roleBadge { font-size: 9px; padding: 2px 6px; }
+  .tbMeta  { font-size: 10px; }
+  .tbSave, .tbPublish, .tbGhost { font-size: 10px; padding: 4px 8px; }
+
+  /* Site nav compact */
+  .siteNav { padding: 9px 14px; }
+  .siteNavBrand { font-size: 13px; gap: 5px; }
+  .siteNavBrand svg { width: 15px; height: 15px; }
+  .siteNavLinks { display: none; }
+  .siteNavCta { font-size: 10px; padding: 5px 10px; border-radius: 6px; }
+
+  /* Stack body columns */
+  .siteBody {
+    grid-template-columns: 1fr;
+    padding: 14px 14px;
+    gap: 14px;
+    overflow-y: auto;
+  }
+  .siteLeft  { gap: 8px; }
+  .siteCtaRow { gap: 7px; }
+  .siteFeatures { gap: 4px; }
+
+  /* Tighten editable field sizes */
+  .ef        { font-size: 12px; padding: 5px 8px; }
+  .efLarge   { font-size: 22px; }
+  .efSub     { font-size: 11px; }
+  .efCta, .efCtaGhost { font-size: 11px; padding: 7px 12px; }
+  .efFeat    { font-size: 11px; padding: 4px 8px; gap: 6px; }
+  .efTrust   { font-size: 10px; }
+
+  /* Dashboard card compact */
+  .dash      { padding: 12px 14px; gap: 10px; border-radius: 10px; }
+  .dashTitle { font-size: 12px; }
+  .dashSubtitle { font-size: 9px; }
+  .dashV     { font-size: 15px; }
+  .dashL, .dashU { font-size: 9px; }
+  .dashGrid  { gap: 6px; }
+  .dashCell  { padding: 7px 8px; border-radius: 7px; }
+  .dashChart { min-height: 36px; }
+  .dashBar   { border-radius: 2px 2px 0 0; }
+  .dashActivity { padding-top: 8px; gap: 6px; }
+  .dashActText { font-size: 10px; }
+  .dashActTime { font-size: 9px; }
+  .dashActHead { font-size: 9px; }
+
+  /* Publish/save popups stay readable */
+  .pubSteps { width: 200px; padding: 9px 10px; }
+  .pubStepRow { font-size: 10px; }
+  .saveDraftPop { font-size: 10px; padding: 5px 8px; }
 }

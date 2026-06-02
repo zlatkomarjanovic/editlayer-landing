@@ -21,11 +21,12 @@ export default function Nav() {
     e.preventDefault();
     const outer = document.getElementById("hero-scroll");
     if (!outer) return;
-    // Scroll deep enough into the pinned hero track to fully reveal the demo.
-    const target = outer.offsetTop + window.innerHeight * 1.1;
+    // Scroll to the end of the hero animation track so the dashboard is
+    // fully in view: heroScroll.bottom - viewport = animation 100% complete.
+    const target = outer.offsetTop + outer.offsetHeight - window.innerHeight;
     const lenis = (window as unknown as { lenis?: { scrollTo: (t: number) => void } }).lenis;
-    if (lenis) lenis.scrollTo(target);
-    else window.scrollTo({ top: target, behavior: "smooth" });
+    if (lenis) lenis.scrollTo(Math.max(0, target));
+    else window.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
   }
 
   return (
