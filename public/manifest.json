@@ -1,0 +1,19 @@
+{
+  "name": "EditLayer",
+  "short_name": "EditLayer",
+  "description": "Live in-page content editing for Next.js. No CMS, no database, MIT licensed.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#16a34a",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["developer tools", "productivity"],
+  "lang": "en"
+}

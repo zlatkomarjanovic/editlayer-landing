@@ -1,0 +1,39 @@
+# EditLayer
+
+EditLayer is an open-source npm package that adds live in-page content editing to any Next.js website. It requires no CMS, no database, and no separate service. Editors log in via a magic link, click any editable field directly on the live page, type their changes, and hit Publish. Publishing commits a `content.json` file to the GitHub repository via the GitHub API. Vercel detects the push and redeploys automatically.
+
+## Key facts
+
+- Package name: `@editlayer/next`
+- License: MIT (completely free, forever)
+- Requires: Next.js 13+ with App Router, Vercel, GitHub
+- No database, no hosted service, no vendor lock-in
+- Authentication: magic-link (email + short-lived signed token, HTTP-only cookie session)
+- Content storage: `editlayer/content.json` committed directly to your GitHub repo
+- Roles: Owner (can publish), Editor (can save drafts only)
+- Config: 4 environment variables (secret, site URL, Resend API key, GitHub token)
+
+## How it works
+
+1. Run `npm install @editlayer/next` and `npx editlayer init`. The CLI scaffolds API routes and a config file.
+2. Wrap any hardcoded string with `<EditableText id="unique.field.id">` and keep all existing styles.
+3. Add four env vars to Vercel: EDITLAYER_SECRET, EDITLAYER_SITE_URL, EDITLAYER_RESEND_API_KEY, EDITLAYER_GITHUB_TOKEN.
+4. Push to GitHub. Vercel deploys.
+5. Visit yoursite.com/?edit=true. Enter your email. Click the magic link. Green outlines appear on every editable field.
+6. Click a field, edit inline, see a live preview. Save a draft or hit Publish to commit to GitHub. Vercel redeploys.
+
+## Security model
+
+- Origin validation on every API request
+- Rate limiting on auth and publish endpoints
+- Field ID allowlists (only pre-defined IDs can be written)
+- Content sanitization (plain text only, no arbitrary HTML injection)
+- HTTP-only cookies for sessions
+- Editors cannot publish, only save drafts. Only owners can push live.
+
+## Source and documentation
+
+- npm: https://www.npmjs.com/package/@editlayer/next
+- GitHub: https://github.com/zlatkomarjanovic/editlayer-landing
+- Setup guide: https://editlayer.dev/#setup
+- FAQ: https://editlayer.dev/#faq
