@@ -34,6 +34,5 @@ EditLayer is an open-source npm package that adds live in-page content editing t
 ## Source and documentation
 
 - npm: https://www.npmjs.com/package/@editlayer/next
-- GitHub: https://github.com/zlatkomarjanovic/editlayer-landing
 - Setup guide: https://editlayer.dev/#setup
 - FAQ: https://editlayer.dev/#faq

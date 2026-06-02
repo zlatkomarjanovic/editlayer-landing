@@ -7,7 +7,6 @@ const organization = {
   url: SITE_URL,
   logo: `${SITE_URL}/icon.svg`,
   sameAs: [
-    "https://github.com/zlatkomarjanovic/editlayer-landing",
     "https://www.npmjs.com/package/@editlayer/next",
   ],
 };
