@@ -3,7 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./Nav.module.css";
 
 export default function Nav() {
-  const [banner] = useState(false);
+  // banner permanently removed — keep state for potential re-enable
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [banner, setBanner] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);

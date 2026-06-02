@@ -3,6 +3,8 @@ import { Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import JsonLd from "@/components/JsonLd";
+import { EditLayerProvider } from "@editlayer/next";
+import { loadEditLayerContent } from "@editlayer/next/server";
 
 const instrumentSerif = Instrument_Serif({
   weight: "400",
@@ -96,20 +98,23 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const content = await loadEditLayerContent();
   return (
     <html lang="en" className={instrumentSerif.variable}>
       {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla's
           cz-shortcut-listen, Grammarly) inject attributes onto <body> before
           React hydrates. That's external to our markup and safe to ignore. */}
       <body suppressHydrationWarning>
-        <JsonLd />
-        <SmoothScroll />
-        {children}
+        <EditLayerProvider content={content}>
+          <JsonLd />
+          <SmoothScroll />
+          {children}
+        </EditLayerProvider>
       </body>
     </html>
   );
