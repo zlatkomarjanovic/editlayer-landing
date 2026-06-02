@@ -5,6 +5,7 @@ import styles from "./Nav.module.css";
 export default function Nav() {
   const [banner, setBanner] = useState(true);
   const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const lastY = useRef(0);
 
@@ -12,6 +13,7 @@ export default function Nav() {
     function onScroll() {
       const y = window.scrollY;
       setHidden(y > lastY.current && y > 120);
+      setScrolled(y > 40);
       lastY.current = y;
       if (menuOpen) setMenuOpen(false);
     }
@@ -31,7 +33,7 @@ export default function Nav() {
   }
 
   return (
-    <header className={`${styles.header} ${hidden ? styles.headerHidden : ""}`}>
+    <header className={`${styles.header} ${hidden ? styles.headerHidden : ""} ${scrolled ? styles.headerScrolled : styles.headerTop}`}>
       {banner && (
         <div className={styles.banner}>
           <span className={styles.bannerDot} />

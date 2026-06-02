@@ -3,11 +3,19 @@
   top: 0; left: 0; right: 0;
   z-index: 100;
   transform: translateY(0);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
 }
 .headerHidden { transform: translateY(-100%); }
 
-/* Banner — solid background */
+/* Transparent at page top */
+.headerTop .banner { background: transparent; border-bottom-color: transparent; }
+.headerTop .nav { background: transparent; border-bottom-color: transparent; }
+
+/* Solid once scrolled */
+.headerScrolled .banner { background: #050f08; border-bottom-color: rgba(22,163,74,.18); }
+.headerScrolled .nav { background: rgba(8,8,8,.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: rgba(255,255,255,.07); }
+
+/* Banner */
 .banner {
   display: flex;
   align-items: center;
@@ -19,6 +27,7 @@
   font-size: 12.5px;
   color: rgba(255,255,255,.6);
   flex-wrap: wrap;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 .bannerDot {
   display: block; width: 6px; height: 6px; flex-shrink: 0;
@@ -38,7 +47,7 @@
 }
 .bannerClose:hover { color: rgba(255,255,255,.7); }
 
-/* Nav — fully opaque */
+/* Nav */
 .nav {
   display: flex;
   align-items: center;
@@ -47,6 +56,7 @@
   height: 58px;
   background: #080808;
   border-bottom: 1px solid rgba(255,255,255,.07);
+  transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
 }
 
 .logo {
