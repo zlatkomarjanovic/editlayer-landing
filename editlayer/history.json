@@ -1,4 +1,15 @@
 {
   "version": 1,
-  "entries": []
+  "entries": [
+    {
+      "id": "chg_mpwmdqib_0",
+      "fieldId": "home.hero.eyebrow",
+      "oldValue": "Visual UI for NextJS websites",
+      "newValue": "Visual UI for NextJS websites Z Update",
+      "changedBy": "zlatkomarjanovic.zm@gmail.com",
+      "role": "owner",
+      "createdAt": "2026-06-02T12:34:38.378Z",
+      "publishedAt": "2026-06-02T12:34:38.378Z"
+    }
+  ]
 }

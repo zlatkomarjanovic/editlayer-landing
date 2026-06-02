@@ -1,7 +1,7 @@
 {
   "version": 1,
   "fields": {
-    "home.hero.eyebrow": "Visual UI for NextJS websites",
+    "home.hero.eyebrow": "Visual UI for NextJS websites Z Update",
     "home.hero.title.line1": "Your Next.js site.",
     "home.hero.sub": "Edit headlines, CTAs, and copy directly on the page. Vercel redeploys automatically on publish.",
     "home.hero.cta.primary": "See detailed instructions",
@@ -20,8 +20,8 @@
     "footer.bottom": "Built for developers who ship fast."
   },
   "meta": {
-    "updatedAt": "2026-06-02T12:00:00.000Z",
-    "updatedBy": "init",
+    "updatedAt": "2026-06-02T12:34:38.378Z",
+    "updatedBy": "zlatkomarjanovic.zm@gmail.com",
     "commitSha": null
   }
 }
