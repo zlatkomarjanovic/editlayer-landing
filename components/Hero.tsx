@@ -6,7 +6,7 @@ import styles from "./Hero.module.css";
 
 const FROM_HEADLINE = "Build Something Amazing";
 const TO_HEADLINE   = "Ship Marketing Copy Fast";
-const SUBTITLE      = "The modern platform for teams that move fast — launch landing pages and edit copy without waiting on engineering.";
+const SUBTITLE      = "The modern platform for teams that move fast. Launch landing pages and edit copy without waiting on engineering.";
 const FROM_CTA      = "Get Started Free";
 const TO_CTA        = "Start for Free Today";
 
@@ -141,7 +141,7 @@ export default function Hero() {
 
         <p className={styles.sub}>
           Add <code className={styles.ic}>?edit=true</code> to any URL. Log in with a magic link.
-          Edit headlines, CTAs, and copy directly on the page —
+          Edit headlines, CTAs, and copy directly on the page.
           Vercel redeploys automatically on publish.
         </p>
 
@@ -198,7 +198,7 @@ type FId =
 type EKind = "eyebrow" | "large" | "sub" | "cta" | "ctaGhost" | "feat" | "trust";
 
 const DEFAULTS: Record<FId, string> = {
-  "home.hero.eyebrow": "✦  Prism 2.0 — now in public beta",
+  "home.hero.eyebrow": "✦  Prism 2.0, now in public beta",
   "home.hero.title":   FROM_HEADLINE,
   "home.hero.sub":     SUBTITLE,
   "home.hero.cta":     FROM_CTA,

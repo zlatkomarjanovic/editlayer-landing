@@ -8,7 +8,7 @@ export default function Cta() {
       <p className={styles.label}>Start today</p>
       <h2 className={styles.h2}>One command away<br />from a live editor.</h2>
       <p className={styles.sub}>
-        Your marketing team won&apos;t need to open a code editor just to change a headline. Give them the power to edit — safely.
+        Your marketing team won&apos;t need to open a code editor just to change a headline. Give them the power to edit, safely.
       </p>
       <div className={styles.actions}>
         <a className={styles.btnPrimary} href="#setup">

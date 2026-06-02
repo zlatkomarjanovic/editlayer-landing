@@ -6,7 +6,7 @@ const features = [
   { icon: <PenIcon />,    title: "In-page editing",   body: "Green outlines on hover. Click to open an inline editor. Live preview of changes before publishing." },
   { icon: <RocketIcon />, title: "GitHub → Vercel",   body: (<>Publishing commits <code>content.json</code> to your repo. Vercel detects the push and redeploys. Zero extra infra.</>) },
   { icon: <UsersIcon />,  title: "Roles & access",    body: "Owners publish. Editors save drafts. Add team members via env vars. No database required." },
-  { icon: <ShieldIcon />, title: "Secure by default", body: "Origin validation, rate limiting, field ID allowlists, content sanitization. Plain text only — no arbitrary HTML." },
+  { icon: <ShieldIcon />, title: "Secure by default", body: "Origin validation, rate limiting, field ID allowlists, content sanitization. Plain text only, no arbitrary HTML." },
   { icon: <BoxIcon />,    title: "Zero dependencies", body: "No CMS subscription. No hosted service. No vendor lock-in. Just an npm package and your existing Vercel project." },
 ];
 
@@ -17,7 +17,7 @@ export default function Features() {
         <AnimateIn>
           <p className={styles.label}>What you get</p>
           <h2 className={styles.h2}>Everything you need.<br />Nothing you don&apos;t.</h2>
-          <p className={styles.sub}>Built for developers who want to hand editing control to their clients — without handing over their codebase.</p>
+          <p className={styles.sub}>Built for developers who want to hand editing control to their clients, without handing over their codebase.</p>
         </AnimateIn>
 
         <div className={styles.featuresGrid}>

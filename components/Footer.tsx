@@ -15,7 +15,7 @@ export default function Footer() {
             <span>EditLayer</span>
           </div>
           <p className={styles.tagline}>
-            Inline content editing for<br />Next.js — no CMS required.
+            Inline content editing for<br />Next.js. No CMS required.
           </p>
           <div className={styles.socialLinks}>
             <a href="https://github.com/editlayer" target="_blank" rel="noreferrer" className={styles.social} aria-label="GitHub">

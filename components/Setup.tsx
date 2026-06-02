@@ -234,7 +234,7 @@ function CopyPromptCard() {
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          Option A — Paste into Cursor AI and it wires everything automatically
+          Option A: Paste into Cursor AI and it wires everything automatically
         </span>
         <span className={styles.recommended}>Recommended</span>
       </div>
@@ -278,7 +278,7 @@ export default function Setup() {
           From zero to editable<br />in under 5 minutes
         </h2>
         <p className={styles.sub}>
-          Copy, paste, deploy. Every command and env var you need — nothing more.
+          Copy, paste, deploy. Every command and env var you need. Nothing more.
         </p>
 
         <div className={styles.cards}>
@@ -287,7 +287,7 @@ export default function Setup() {
           <CopyPromptCard />
           <div className={styles.orDivider}>
             <div className={styles.orLine} />
-            <span>OR DO IT MANUALLY — STEPS 3 &amp; 4 BELOW</span>
+            <span>OR DO IT MANUALLY: STEPS 3 &amp; 4 BELOW</span>
             <div className={styles.orLine} />
           </div>
           <Card step="Step 3" title="Wrap your root layout" codeKey="layout" />

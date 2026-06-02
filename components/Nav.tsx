@@ -36,7 +36,7 @@ export default function Nav() {
         <div className={styles.banner}>
           <span className={styles.bannerDot} />
           <span className={styles.bannerText}>
-            EditLayer v0.3.1 — magic-link auth, editor roles &amp; GitHub autodeploy
+            EditLayer v0.3.1: magic-link auth, editor roles &amp; GitHub autodeploy
           </span>
           <a
             className={styles.bannerLink}

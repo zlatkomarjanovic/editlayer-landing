@@ -2,8 +2,8 @@ import styles from "./HowItWorks.module.css";
 import AnimateIn from "./AnimateIn";
 
 const steps = [
-  { n: "01", title: "Install the package",   body: "Run one command to install and scaffold. The CLI creates the API routes and config file automatically — nothing to build from scratch.", tag: "npm install @editlayer/next" },
-  { n: "02", title: "Mark editable content", body: "Wrap any headline, paragraph, or link with EditableText. Keep your existing className and styles — EditLayer wraps around them, never rewrites them.", tag: "<EditableText id=\"...\">" },
+  { n: "01", title: "Install the package",   body: "Run one command to install and scaffold. The CLI creates the API routes and config file automatically. Nothing to build from scratch.", tag: "npm install @editlayer/next" },
+  { n: "02", title: "Mark editable content", body: "Wrap any headline, paragraph, or link with EditableText. Keep your existing className and styles. EditLayer wraps around them, never rewrites them.", tag: "<EditableText id=\"...\">" },
   { n: "03", title: "Set env vars & deploy", body: "Add your secret, site URL, Resend API key, and GitHub token to Vercel. Push to GitHub. That's the entire backend.", tag: "4 env vars" },
   { n: "04", title: "Open edit mode",        body: "Visit yoursite.com/?edit=true. Enter your email, click the magic link. Green outlines appear on every editable field immediately.", tag: "?edit=true" },
   { n: "05", title: "Click, type, publish",  body: "Click any field to edit inline. See the live preview as you type. Save a draft to share, or hit Publish to commit directly to GitHub.", tag: "git commit" },
