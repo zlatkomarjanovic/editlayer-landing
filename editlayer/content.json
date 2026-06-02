@@ -1,10 +1,10 @@
 {
   "version": 1,
   "fields": {
-    "home.hero.eyebrow": "Visual UI for NextJS websites Z Update",
-    "home.hero.title.line1": "Your Next.js site.",
+    "home.hero.eyebrow": "Visual Editor for NextJS Websites",
+    "home.hero.title.line1": "Your Next.js site",
     "home.hero.sub": "Edit headlines, CTAs, and copy directly on the page. Vercel redeploys automatically on publish.",
-    "home.hero.cta.primary": "See detailed instructions",
+    "home.hero.cta.primary": "See Detailed Instructions",
     "cta.label": "Start today",
     "cta.title": "One command away from a live editor.",
     "cta.sub": "Your marketing team won't need to open a code editor just to change a headline. Give them the power to edit, safely.",
@@ -20,7 +20,7 @@
     "footer.bottom": "Built for developers who ship fast."
   },
   "meta": {
-    "updatedAt": "2026-06-02T12:34:38.378Z",
+    "updatedAt": "2026-06-02T12:37:27.573Z",
     "updatedBy": "zlatkomarjanovic.zm@gmail.com",
     "commitSha": null
   }

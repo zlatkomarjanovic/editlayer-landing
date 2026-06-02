@@ -2,6 +2,36 @@
   "version": 1,
   "entries": [
     {
+      "id": "chg_mpwmhd12_0",
+      "fieldId": "home.hero.eyebrow",
+      "oldValue": "Visual UI for NextJS websites Z Update",
+      "newValue": "Visual Editor for NextJS Websites",
+      "changedBy": "zlatkomarjanovic.zm@gmail.com",
+      "role": "owner",
+      "createdAt": "2026-06-02T12:37:27.573Z",
+      "publishedAt": "2026-06-02T12:37:27.573Z"
+    },
+    {
+      "id": "chg_mpwmhd12_1",
+      "fieldId": "home.hero.title.line1",
+      "oldValue": "Your Next.js site.",
+      "newValue": "Your Next.js site",
+      "changedBy": "zlatkomarjanovic.zm@gmail.com",
+      "role": "owner",
+      "createdAt": "2026-06-02T12:37:27.573Z",
+      "publishedAt": "2026-06-02T12:37:27.573Z"
+    },
+    {
+      "id": "chg_mpwmhd12_2",
+      "fieldId": "home.hero.cta.primary",
+      "oldValue": "See detailed instructions",
+      "newValue": "See Detailed Instructions",
+      "changedBy": "zlatkomarjanovic.zm@gmail.com",
+      "role": "owner",
+      "createdAt": "2026-06-02T12:37:27.573Z",
+      "publishedAt": "2026-06-02T12:37:27.573Z"
+    },
+    {
       "id": "chg_mpwmdqib_0",
       "fieldId": "home.hero.eyebrow",
       "oldValue": "Visual UI for NextJS websites",
