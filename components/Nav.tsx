@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./Nav.module.css";
 
 export default function Nav() {
-  const [banner, setBanner] = useState(true);
+  const [banner] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
