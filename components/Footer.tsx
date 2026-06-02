@@ -35,21 +35,21 @@ export default function Footer() {
 
         <div className={styles.cols}>
           <div className={styles.col}>
-            <h4 className={styles.colTitle}>Product</h4>
+            <h4 className={styles.colTitle}><EditableText id="footer.col0.title">Product</EditableText></h4>
             <a href="#how-it-works">How it works</a>
             <a href="#setup">Setup guide</a>
             <a href="https://www.npmjs.com/package/@editlayer/next" target="_blank" rel="noreferrer">npm package</a>
             <a href="https://github.com/editlayer" target="_blank" rel="noreferrer">GitHub</a>
           </div>
           <div className={styles.col}>
-            <h4 className={styles.colTitle}>Resources</h4>
+            <h4 className={styles.colTitle}><EditableText id="footer.col1.title">Resources</EditableText></h4>
             <a href="#setup">Documentation</a>
             <a href="#faq">FAQ</a>
             <a href="https://github.com/editlayer/releases" target="_blank" rel="noreferrer">Changelog</a>
             <a href="https://github.com/editlayer/issues" target="_blank" rel="noreferrer">Issues</a>
           </div>
           <div className={styles.col}>
-            <h4 className={styles.colTitle}>Legal</h4>
+            <h4 className={styles.colTitle}><EditableText id="footer.col2.title">Legal</EditableText></h4>
             <a href="https://github.com/editlayer/blob/main/LICENSE" target="_blank" rel="noreferrer">MIT License</a>
           </div>
         </div>

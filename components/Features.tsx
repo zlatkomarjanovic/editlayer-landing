@@ -2,13 +2,13 @@ import styles from "./Section.module.css";
 import AnimateIn from "./AnimateIn";
 import { EditableText } from "@editlayer/next";
 
-const features = [
-  { icon: <LockIcon />,   title: "Magic link auth",   body: "Email-only login with short-lived signed tokens. No passwords, no OAuth config. HTTP-only cookies for sessions." },
-  { icon: <PenIcon />,    title: "In-page editing",   body: "Green outlines on hover. Click to open an inline editor. Live preview of changes before publishing." },
-  { icon: <RocketIcon />, title: "GitHub → Vercel",   body: (<>Publishing commits <code>content.json</code> to your repo. Vercel detects the push and redeploys. Zero extra infra.</>) },
-  { icon: <UsersIcon />,  title: "Roles & access",    body: "Owners publish. Editors save drafts. Add team members via env vars. No database required." },
-  { icon: <ShieldIcon />, title: "Secure by default", body: "Origin validation, rate limiting, field ID allowlists, content sanitization. Plain text only, no arbitrary HTML." },
-  { icon: <BoxIcon />,    title: "Zero dependencies", body: "No CMS subscription. No hosted service. No vendor lock-in. Just an npm package and your existing Vercel project." },
+const FEATURES: { id: string; icon: React.ReactNode; title: string; body: string }[] = [
+  { id: "f0", icon: <LockIcon />,   title: "Magic link auth",   body: "Email-only login with short-lived signed tokens. No passwords, no OAuth config. HTTP-only cookies for sessions." },
+  { id: "f1", icon: <PenIcon />,    title: "In-page editing",   body: "Green outlines on hover. Click to open an inline editor. Live preview of changes before publishing." },
+  { id: "f2", icon: <RocketIcon />, title: "GitHub → Vercel",   body: "Publishing commits content.json to your repo. Vercel detects the push and redeploys. Zero extra infra." },
+  { id: "f3", icon: <UsersIcon />,  title: "Roles & access",    body: "Owners publish. Editors save drafts. Add team members via env vars. No database required." },
+  { id: "f4", icon: <ShieldIcon />, title: "Secure by default", body: "Origin validation, rate limiting, field ID allowlists, content sanitization. Plain text only, no arbitrary HTML." },
+  { id: "f5", icon: <BoxIcon />,    title: "Zero dependencies", body: "No CMS subscription. No hosted service. No vendor lock-in. Just an npm package and your existing Vercel project." },
 ];
 
 export default function Features() {
@@ -22,12 +22,16 @@ export default function Features() {
         </AnimateIn>
 
         <div className={styles.featuresGrid}>
-          {features.map((f, i) => (
-            <AnimateIn key={f.title} delay={i * 60}>
+          {FEATURES.map((f, i) => (
+            <AnimateIn key={f.id} delay={i * 60}>
               <div className={styles.feature}>
                 <div className={styles.featureIcon}>{f.icon}</div>
-                <h3 className={styles.featureTitle}>{f.title}</h3>
-                <p className={styles.featureBody}>{f.body}</p>
+                <h3 className={styles.featureTitle}>
+                  <EditableText id={`features.${f.id}.title`}>{f.title}</EditableText>
+                </h3>
+                <p className={styles.featureBody}>
+                  <EditableText id={`features.${f.id}.body`}>{f.body}</EditableText>
+                </p>
               </div>
             </AnimateIn>
           ))}

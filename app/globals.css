@@ -59,3 +59,16 @@ a { color: inherit; text-decoration: none; }
   40%  { transform: translate(-50%, -50%) scale(0.7); }
   100% { transform: translate(-50%, -50%) scale(1); }
 }
+
+/* ── EditLayer integration overrides ─────────────────────────────────────────
+   The package popover uses position:absolute with getBoundingClientRect()
+   (viewport coords). That mismatch causes it to appear in the wrong place
+   when the page is scrolled, and the autoFocus triggers a browser scroll-jump.
+   Switching to position:fixed makes viewport coords work correctly.         */
+.elayer-popover { position: fixed !important; }
+
+/* When the real EditLayer toolbar is active (edit mode), push our site nav
+   down so it sits below the EditLayer toolbar instead of behind it.         */
+body:has(.elayer-toolbar) header {
+  top: 48px;
+}

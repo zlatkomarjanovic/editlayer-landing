@@ -155,7 +155,7 @@ export default function Hero() {
           </a>
           <button className={styles.install} onClick={copy}>
             <span className={styles.dollar}>$</span>
-            <span className={styles.cmd}>npm install @editlayer/next</span>
+            <span className={styles.cmd}><EditableText id="home.hero.install.cmd">npm install @editlayer/next</EditableText></span>
             <span className={styles.copyBtn}>
               {copied
                 ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>

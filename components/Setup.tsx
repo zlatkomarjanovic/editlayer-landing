@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styles from "./Setup.module.css";
+import { EditableText } from "@editlayer/next";
 
 const CURSOR_PROMPT = `I have installed @editlayer/next (v0.3.1) in this Next.js App Router project. Your task is to complete the full integration following the exact pattern documented below. Do not deviate from these conventions.
 
@@ -273,12 +274,12 @@ export default function Setup() {
   return (
     <section className={styles.section} id="setup">
       <div className={styles.inner}>
-        <p className={styles.label}>Setup guide</p>
+        <p className={styles.label}><EditableText id="setup.label">Setup guide</EditableText></p>
         <h2 className={styles.h2}>
-          From zero to editable<br />in under 5 minutes
+          <EditableText id="setup.title">From zero to editable in under 5 minutes</EditableText>
         </h2>
         <p className={styles.sub}>
-          Copy, paste, deploy. Every command and env var you need. Nothing more.
+          <EditableText id="setup.sub">Copy, paste, deploy. Every command and env var you need. Nothing more.</EditableText>
         </p>
 
         <div className={styles.cards}>
