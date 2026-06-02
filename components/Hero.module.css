@@ -571,6 +571,9 @@
   /* ── Demo: Analytics overview — hidden on mobile ── */
   .siteRight { display: none; }
 
+  /* ── Demo: height auto so it shrinks to fit left-column content ── */
+  .demo { height: auto; }
+
   /* ── Demo: Dashboard card (shown only on wider mobile/tablet) ── */
   .dash      { padding: 12px 13px; gap: 10px; border-radius: 10px; }
   .dashTitle { font-size: 12px; }
