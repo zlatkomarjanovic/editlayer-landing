@@ -105,16 +105,16 @@
 }
 
 .btnPrimary {
-  display: inline-flex; align-items: center; gap: 8px;
-  height: 42px; padding: 0 20px; background: var(--brand); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 42px; padding: 0 20px; min-width: 210px; background: var(--brand); color: #fff;
   border-radius: 9px; font-size: 13.5px; font-weight: 700;
   transition: background .15s, transform .12s, box-shadow .15s; white-space: nowrap;
 }
 .btnPrimary:hover { background: var(--brand-dim); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(22,163,74,.28); }
 
 .install {
-  display: inline-flex; align-items: center; gap: 8px;
-  height: 42px; padding: 0 14px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 42px; padding: 0 14px; min-width: 210px;
   background: var(--surface); border: 1px solid var(--border2);
   border-radius: 9px;
   font-family: var(--mono); font-size: 12.5px; color: var(--muted);
@@ -568,11 +568,13 @@
   .efFeat    { font-size: 11px; padding: 4px 8px; gap: 6px; }
   .efTrust   { font-size: 10px; }
 
-  /* ── Demo: Dashboard card ── */
+  /* ── Demo: Analytics overview — hidden on mobile ── */
+  .siteRight { display: none; }
+
+  /* ── Demo: Dashboard card (shown only on wider mobile/tablet) ── */
   .dash      { padding: 12px 13px; gap: 10px; border-radius: 10px; }
   .dashTitle { font-size: 12px; }
   .dashSubtitle { font-size: 9px; }
-  /* Hide period tabs (14D/30D/90D) — too tight on mobile */
   .dashTabs  { display: none; }
   .dashV     { font-size: 15px; }
   .dashL, .dashU { font-size: 9px; }
