@@ -136,7 +136,7 @@ export default function Hero() {
 
         <h1 className={styles.h1}>
           Your Next.js site.<br />
-          Edited <em className={styles.em}>live</em> by your team.
+          <span className={styles.h1Serif}>Edited <em className={styles.em}>live</em> by your team.</span>
         </h1>
 
         <p className={styles.sub}>

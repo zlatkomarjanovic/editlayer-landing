@@ -83,6 +83,14 @@
   margin-bottom: 18px;
 }
 
+/* "Edited live by your team." uses Instrument Serif for editorial contrast */
+.h1Serif {
+  font-family: var(--font-serif, Georgia, serif);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -.01em;
+}
+
 .em { font-style: normal; color: var(--brand-glow); }
 
 .sub {

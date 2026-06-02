@@ -1,7 +1,16 @@
 import type { Metadata, Viewport } from "next";
+import { Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import JsonLd from "@/components/JsonLd";
+
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 const SITE_URL = "https://editlayer.dev";
 const TITLE    = "EditLayer | Live In-Page Editing for Next.js";
@@ -93,7 +102,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={instrumentSerif.variable}>
       {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla's
           cz-shortcut-listen, Grammarly) inject attributes onto <body> before
           React hydrates. That's external to our markup and safe to ignore. */}
