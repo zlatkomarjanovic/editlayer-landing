@@ -5,6 +5,7 @@ import styles from "./Nav.module.css";
 export default function Nav() {
   const [banner, setBanner] = useState(true);
   const [hidden, setHidden] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const lastY = useRef(0);
 
   useEffect(() => {
@@ -12,17 +13,17 @@ export default function Nav() {
       const y = window.scrollY;
       setHidden(y > lastY.current && y > 120);
       lastY.current = y;
+      if (menuOpen) setMenuOpen(false);
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [menuOpen]);
 
   function handleSeeDemo(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
+    setMenuOpen(false);
     const outer = document.getElementById("hero-scroll");
     if (!outer) return;
-    // Scroll to the end of the hero animation track so the dashboard is
-    // fully in view: heroScroll.bottom - viewport = animation 100% complete.
     const target = outer.offsetTop + outer.offsetHeight - window.innerHeight;
     const lenis = (window as unknown as { lenis?: { scrollTo: (t: number) => void } }).lenis;
     if (lenis) lenis.scrollTo(Math.max(0, target));
@@ -70,7 +71,30 @@ export default function Nav() {
             </svg>
           </a>
         </div>
+        {/* Hamburger — mobile only */}
+        <button
+          className={styles.hamburger}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(o => !o)}
+        >
+          <span className={`${styles.hbar} ${menuOpen ? styles.hbar1Open : ""}`} />
+          <span className={`${styles.hbar} ${menuOpen ? styles.hbar2Open : ""}`} />
+          <span className={`${styles.hbar} ${menuOpen ? styles.hbar3Open : ""}`} />
+        </button>
       </nav>
+
+      {/* Mobile drawer */}
+      {menuOpen && (
+        <div className={styles.drawer} onClick={() => setMenuOpen(false)}>
+          <a className={styles.drawerLink} href="#how-it-works" onClick={() => setMenuOpen(false)}>How it works</a>
+          <a className={styles.drawerLink} href="#setup" onClick={() => setMenuOpen(false)}>Docs</a>
+          <a className={styles.drawerLink} href="https://www.npmjs.com/package/@editlayer/next" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>npm</a>
+          <a className={styles.drawerPrimary} href="#demo" onClick={handleSeeDemo}>
+            See demo →
+          </a>
+        </div>
+      )}
     </header>
   );
 }

@@ -131,7 +131,7 @@ export default function Hero() {
         <div ref={contentRef} className={styles.content}>
         <div className={styles.badge}>
           <span className={styles.badgeDot} />
-          Self-hosted &middot; No CMS &middot; MIT License
+          Visual UI for NextJS websites
         </div>
 
         <h1 className={styles.h1}>

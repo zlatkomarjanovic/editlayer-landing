@@ -513,49 +513,54 @@
 .hoverDot { display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--brand-glow); box-shadow: 0 0 5px var(--brand-glow); }
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
-/* ── Responsive: hero text (all breakpoints) ─────────────────────────────── */
 @media (max-width: 768px) {
-  .stickyStage { padding-top: 100px; }
-}
-@media (max-width: 480px) {
-  .stickyStage { padding-top: 72px; }
-}
+  /* Hero section — more breathing room from nav on mobile */
+  .stickyStage { padding-top: 120px; }
 
-/* ── Responsive: demo internals ──────────────────────────────────────────── */
-/* The demo is now fluid width so its internal layout must adapt too. Below
-   768px the two-column siteBody stacks into a single column. */
-@media (max-width: 768px) {
-  /* Chrome dots scale down */
+  /* Hero text — full-width with 4% side breathing room */
+  .content { padding: 0 4%; max-width: 100%; }
+  .sub     { max-width: 92vw; }
+
+  /* CTA row — stack buttons to same full width */
+  .ctaRow { flex-direction: column; align-items: stretch; padding: 0 4%; gap: 8px; }
+  .btnPrimary { justify-content: center; width: 100%; }
+  .install    { justify-content: center; width: 100%; }
+
+  /* ── Demo: Chrome ── */
   .d1, .d2, .d3 { width: 9px; height: 9px; }
   .chrome { padding: 8px 12px; gap: 8px; }
-  .urlBar  { padding: 4px 10px; font-size: 11px; max-width: 240px; }
+  .urlBar  { padding: 4px 10px; font-size: 11px; max-width: 200px; }
 
-  /* Toolbar compact */
-  .toolbar { height: 40px; padding: 0 12px; gap: 7px; }
+  /* ── Demo: Toolbar — hide secondary items, keep brand + save + publish ── */
+  .toolbar { height: 40px; padding: 0 10px; gap: 6px; flex-wrap: nowrap; }
   .brand   { font-size: 12px; }
-  .roleBadge { font-size: 9px; padding: 2px 6px; }
-  .tbMeta  { font-size: 10px; }
-  .tbSave, .tbPublish, .tbGhost { font-size: 10px; padding: 4px 8px; }
+  .roleBadge { font-size: 9px; padding: 2px 5px; }
+  /* Hide email and change-status label — too wide for mobile */
+  .tbMeta  { display: none; }
+  /* Hide Access/History/Exit ghost buttons — not needed in preview */
+  .tbGhost { display: none; }
+  .tbSave    { font-size: 11px; padding: 4px 8px; }
+  .tbPublish { font-size: 11px; padding: 4px 9px; }
 
-  /* Site nav compact */
+  /* ── Demo: Site nav compact ── */
   .siteNav { padding: 9px 14px; }
   .siteNavBrand { font-size: 13px; gap: 5px; }
   .siteNavBrand svg { width: 15px; height: 15px; }
   .siteNavLinks { display: none; }
   .siteNavCta { font-size: 10px; padding: 5px 10px; border-radius: 6px; }
 
-  /* Stack body columns */
+  /* ── Demo: Site body — single column ── */
   .siteBody {
     grid-template-columns: 1fr;
-    padding: 14px 14px;
-    gap: 14px;
+    padding: 12px;
+    gap: 12px;
     overflow-y: auto;
   }
   .siteLeft  { gap: 8px; }
   .siteCtaRow { gap: 7px; }
   .siteFeatures { gap: 4px; }
 
-  /* Tighten editable field sizes */
+  /* ── Demo: Editable fields ── */
   .ef        { font-size: 12px; padding: 5px 8px; }
   .efLarge   { font-size: 22px; }
   .efSub     { font-size: 11px; }
@@ -563,10 +568,12 @@
   .efFeat    { font-size: 11px; padding: 4px 8px; gap: 6px; }
   .efTrust   { font-size: 10px; }
 
-  /* Dashboard card compact */
-  .dash      { padding: 12px 14px; gap: 10px; border-radius: 10px; }
+  /* ── Demo: Dashboard card ── */
+  .dash      { padding: 12px 13px; gap: 10px; border-radius: 10px; }
   .dashTitle { font-size: 12px; }
   .dashSubtitle { font-size: 9px; }
+  /* Hide period tabs (14D/30D/90D) — too tight on mobile */
+  .dashTabs  { display: none; }
   .dashV     { font-size: 15px; }
   .dashL, .dashU { font-size: 9px; }
   .dashGrid  { gap: 6px; }
@@ -578,8 +585,14 @@
   .dashActTime { font-size: 9px; }
   .dashActHead { font-size: 9px; }
 
-  /* Publish/save popups stay readable */
+  /* ── Publish/save popups ── */
   .pubSteps { width: 200px; padding: 9px 10px; }
   .pubStepRow { font-size: 10px; }
   .saveDraftPop { font-size: 10px; padding: 5px 8px; }
+}
+
+@media (max-width: 480px) {
+  .stickyStage { padding-top: 90px; }
+  .h1 { font-size: clamp(28px, 9vw, 40px); }
+  .sub { font-size: clamp(13px, 4vw, 16px); }
 }
